@@ -187,6 +187,11 @@
 ;;make c indent 4 by default instead of 2
 (setq-default c-basic-offset 4)
 
-;(setq mac-option-modifier 'meta)  ;enable this if using a mac
-;; (setq custom-file "~/.emacs.d/custom.el")
-;; (load custom-file)
+					;(setq mac-option-modifier 'meta)  ;enable this if using a mac
+(defconst custom-file (expand-file-name "custom.el" user-emacs-directory))
+
+(unless (file-exists-p custom-file)
+  (write-region "" "" custom-file))
+
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
