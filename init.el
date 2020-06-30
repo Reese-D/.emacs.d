@@ -26,15 +26,15 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
-(add-and-require-multiple 'use-package	;;used below
+(add-and-require-multiple 'use-package	;used below
 			  'haskell-mode
 			  'transpose-frame
-			  'inf-ruby	;;run ruby in emacs with M-x inf-ruby
+			  'inf-ruby	;run ruby in emacs with M-x inf-ruby
 			  'multiple-cursors
 			  'magit-popup
-			  'magit	;;for git merges
-			  'alchemist	;;elixir (lang) stuff
-			  'delight	;;delight and diminish help de-clutter the "mode lines"
+			  'magit	;for git merges
+			  'alchemist	;elixir (lang) stuff
+			  'delight	;delight and diminish help de-clutter the "mode lines"
 			  'diminish
 
 			  ;;use package packages
@@ -139,15 +139,15 @@
 ;;; Define a default fullscreen and non full-screen mode, then add a function to toggle between the two
 (defun my-fullscreen ()
   (interactive)
-  (set-frame-parameter nil 'fullscreen 'fullboth) ;this makes the frame go fullscreen
-  (tool-bar-mode -1) ;these 3 lines turn off GUI junk
+  (set-frame-parameter nil 'fullscreen 'fullboth)	;this makes the frame go fullscreen
+  (tool-bar-mode -1)					;these 3 lines turn off GUI junk
   (menu-bar-mode -1))
 
 (defun my-non-fullscreen ()
   (interactive)
   (set-frame-parameter nil 'width 82)
   (set-frame-parameter nil 'fullscreen 'fullheight)
-  (menu-bar-mode t)) ;I don't turn tool-bar and scroll-bar back on b/c I never want them
+  (menu-bar-mode t))					;I don't turn tool-bar and scroll-bar back on b/c I never want them
 
 
 (defun toggle-fullscreen ()
@@ -159,13 +159,12 @@
 ;;copies the buffers current file path
 (defun filename ()
   "Copy the full path of the current buffer."
-
   (interactive)
   (kill-new (buffer-file-name (window-buffer (minibuffer-selected-window)))))
 
 ;;---------------------------------keybindings------------------------------------
 
-(setq next-line-add-newlines t) ;;C-n now adds newline if at end of buffer
+(setq next-line-add-newlines t) ;C-n now adds newline if at end of buffer
 (global-set-key (kbd "C-c f") 'toggle-fullscreen)
 (global-set-key (kbd "<C-tab>") 'dabbrev-expand)
 (global-set-key (kbd "C-c v") 'filename)
@@ -189,7 +188,7 @@
 ;;make c indent 4 by default instead of 2
 (setq-default c-basic-offset 4)
 
-					;(setq mac-option-modifier 'meta)  ;enable this if using a mac
+;;(setq mac-option-modifier 'meta)  ;enable this if using a mac
 (defconst custom-file (expand-file-name "custom.el" user-emacs-directory))
 
 (unless (file-exists-p custom-file)
@@ -199,12 +198,12 @@
 (load custom-file)
 
 ;;---------------------------------Custom  Themes---------------------------------
-(load-theme 'wombat t);default dark color scheme
-(load-theme 'tsdh-dark t) ;another dark color scheme
+(load-theme 'wombat t)		;neutral dark color scheme
+(load-theme 'tsdh-dark t)	;another default emacs dark color scheme
 (load-theme 'monokai t)
-(load-theme 'ample t t) ;;these are all pretty nice, each gets a little lighter
+(load-theme 'ample t t)		;these are all pretty nice, each gets a little lighter
 (load-theme 'ample-flat t t)
-(load-theme 'ample-light t t) ;;tan background
+(load-theme 'ample-light t t)	;tan background
 
-(enable-theme 'tsdh-dark) ;;our chosen theme, pick whatever you like
+(enable-theme 'tsdh-dark)	;our chosen theme, pick whatever you like
 
