@@ -1,0 +1,7 @@
+*~
+auto-save-list/*
+snippets/*
+elpa/*
+*.eld
+*#
+custom.el
