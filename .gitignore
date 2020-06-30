@@ -5,3 +5,4 @@ elpa/*
 *.eld
 *#
 custom.el
+transient/*
