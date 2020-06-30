@@ -48,7 +48,12 @@
 			  'rainbow-delimiters
 			  'web-mode
 			  'glsl-mode
-			  'undo-tree)
+			  'undo-tree
+
+			  ;;Themes
+			  'ample-theme
+			  'monokai-theme
+			  )
 
 
 
@@ -178,9 +183,6 @@
 (setq inhibit-startup-message t)
 (put 'upcase-region 'disabled nil)
 
-;;add wombat theme
-(load-theme 'wombat)
-
 ;;this will indent switch statements in c
 (c-set-offset 'case-label '+)
 
@@ -195,3 +197,14 @@
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
+
+;;---------------------------------Custom  Themes---------------------------------
+(load-theme 'wombat t);default dark color scheme
+(load-theme 'tsdh-dark t) ;another dark color scheme
+(load-theme 'monokai t)
+(load-theme 'ample t t) ;;these are all pretty nice, each gets a little lighter
+(load-theme 'ample-flat t t)
+(load-theme 'ample-light t t) ;;tan background
+
+(enable-theme 'tsdh-dark) ;;our chosen theme, pick whatever you like
+
