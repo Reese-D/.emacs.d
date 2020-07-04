@@ -49,6 +49,7 @@
 			  'web-mode
 			  'glsl-mode
 			  'undo-tree
+			  'elpy
 
 			  ;;Themes
 			  'ample-theme
@@ -58,6 +59,12 @@
 
 
 ;;---------------------------------use package------------------------------------
+
+(use-package elpy
+  :ensure t
+  :defer t
+  :init
+  (advice-add 'python-mode :before 'elpy-enable))
 
 (use-package multiple-cursors
   :bind
@@ -205,5 +212,5 @@
 (load-theme 'ample-flat t t)
 (load-theme 'ample-light t t)	;tan background
 
-(enable-theme 'tsdh-dark)	;our chosen theme, pick whatever you like
+(enable-theme 'monokai)	;our chosen theme, pick whatever you like
 
