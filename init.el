@@ -50,7 +50,8 @@
 			  'glsl-mode
 			  'undo-tree
 			  'elpy
-
+			  'anaconda-mode
+			  
 			  ;;Themes
 			  'ample-theme
 			  'monokai-theme
@@ -65,6 +66,10 @@
   :defer t
   :init
   (advice-add 'python-mode :before 'elpy-enable))
+
+(use-package anaconda-mode
+  :hook python-mode
+  (python-mode . anaconda-eldoc-mode))
 
 (use-package multiple-cursors
   :bind
