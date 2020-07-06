@@ -67,9 +67,19 @@
   :init
   (advice-add 'python-mode :before 'elpy-enable))
 
+
+;; M-. find definitions
+;; C-x 4 find definitions other window
+;; M-, pop back ref stack
+;; M-. show doc
 (use-package anaconda-mode
-  :hook python-mode
-  (python-mode . anaconda-eldoc-mode))
+   :init (defun anaconda-autocomplete-hook ()
+   	  (local-set-key (kbd "C-<tab>") 'anaconda-mode-complete))
+   :hook (progn
+	   (python-mode . anaconda-mode)
+	   (python-mode . anaconda-eldoc-mode)
+	   (python-mode . anaconda-autocomplete-hook)))
+
 
 (use-package multiple-cursors
   :bind
