@@ -49,7 +49,7 @@
 			  'web-mode
 			  'glsl-mode
 			  'undo-tree
-			  'neo-tree
+			  'neotree
 			  'elpy
 			  'anaconda-mode
 			  
