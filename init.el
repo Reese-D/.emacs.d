@@ -28,49 +28,42 @@
   (package-refresh-contents))
 
 (add-and-require-multiple 'use-package	;used below
-			  'haskell-mode
-			  'transpose-frame
-			  'inf-ruby	;run ruby in emacs with M-x inf-ruby
-			  'multiple-cursors
-			  'magit-popup
-			  'magit	;for git merges
-			  'alchemist	;elixir (lang) stuff
-			  'delight	;delight and diminish help de-clutter the "mode lines"
-			  'diminish
 
-			  ;;use package packages
-			  'multiple-cursors
-			  'dumb-jump
-			  'yasnippet
-			  'yasnippet-snippets
-			  'projectile
-			  'slime
-			  'ace-jump-mode
-			  'rainbow-delimiters
-			  'web-mode
-			  'glsl-mode
+			  ;;use-package can't find these, so try other repos
 			  'undo-tree
-			  'neotree
-			  'elpy
-			  'anaconda-mode
-			  'org
 
 			  ;;Themes
 			  'ample-theme
 			  'monokai-theme
 			  )
 
-
-
 ;;---------------------------------use package------------------------------------
+(use-package alchemist
+  :ensure t)
+(use-package diminish
+  :ensure t)
+(use-package haskell-mode
+  :ensure t)
+(use-package transpose-frame
+  :ensure t)
+(use-package inf-ruby	;run ruby in emacs with M-x inf-ruby
+  :ensure t)
+(use-package magit-popup
+  :ensure t)
+(use-package magit	;for git merges
+  :ensure t)
+(use-package delight
+  :ensure t)
 
 (use-package org
+  :ensure t
   :config (add-to-list 'auto-mode-list '("\\.org\\'" . org-mode))
   :bind
   ("C-c o l" . org-store-link)
   ("C-c o a" . org-agenda))
-  
+
 (use-package elpy
+  :ensure t
   :ensure t
   :defer t
   :init
@@ -81,22 +74,25 @@
 ;; M-, pop back ref stack
 ;; M-. show doc
 (use-package anaconda-mode
-   :init (defun anaconda-autocomplete-hook ()
+  :ensure t
+  :init (defun anaconda-autocomplete-hook ()
    	  (local-set-key (kbd "C-<tab>") 'anaconda-mode-complete))
-   :hook (progn
-	   (python-mode . anaconda-mode)
-	   (python-mode . anaconda-eldoc-mode)
-	   (python-mode . anaconda-autocomplete-hook)))
+  :hook (progn
+	  (python-mode . anaconda-mode)
+	  (python-mode . anaconda-eldoc-mode)
+	  (python-mode . anaconda-autocomplete-hook)))
 
 
 (use-package multiple-cursors
+  :ensure t
   :bind
   ("C-c s" . mc/edit-lines)
   ("C-c n" . mc/mark-next-like-this)
   ("C-c p" . mc/mark-previous.like-this)
   ("C-c a" . mc/mark-more-like-this-extended))
 
-(use-package dumb-jump
+(use-package dumb-jump 
+  :ensure t
   :bind
   ("M-i" . nil);; Remove the old keybinding tab-to-tab-stop
   ("M-i i" . dumb-jump-go)
@@ -107,32 +103,40 @@
   ("M-i w" . dumbp-jump-g-prefer-external-other-window))
 
 (use-package yasnippet
+  :ensure t
   :config
   (progn
     (yas-global-mode 1)
-    (use-package yasnippet-snippets)))
+    (use-package yasnippet-snippets
+      :ensure t)))
 
 (use-package projectile
+  :ensure t
   :config
   (projectile-global-mode 1))
 
 (use-package slime
+  :ensure t
   :config
   (setq inferior-lisp-program "/usr/bin/sbcl")
   (setq slime-contribs '(slime-fancy)))
 
 
 (use-package ace-jump-mode
+  :ensure t
   :diminish ace-jump-mode
   :bind ("C-c SPC" . ace-jump-mode))
 
 (use-package rainbow-delimiters
+  :ensure t
   :config (progn
 	    (defface my-outermost-paren-face
 	      '((t (:weight bold)))
 	      "Face used for outermost parens.")
-	    (use-package cl-lib)
-	    (use-package color)
+	    (use-package cl-lib
+	      :ensure t)
+	    (use-package color
+	      :ensure t)
 	    (show-paren-mode)
 	    (cl-loop
 	     for index from 1 to rainbow-delimiters-max-face-count
@@ -140,17 +144,21 @@
 	     (let ((face (intern (format "rainbow-delimiters-depth-%d-face" index))))
 	       (cl-callf color-saturate-name (face-foreground face) 30))))
   :hook (prog-mode . rainbow-delimiters-mode))
-    
+
 (use-package web-mode
+  :ensure t
   :init
-  (use-package glsl-mode)
-  (use-package web-mode)
+  (use-package glsl-mode
+    :ensure t)
+  (use-package web-mode
+    :ensure t)
   :config (let ((glsl-stuff (mapcar (lambda (x) (cons x 'glsl-mode)) '("\\.glsl\\'" "\\.vert\\'" "\\.frag\\'" "\\.geom\\'")))
 		(web-stuff (mapcar (lambda (x) (cons x 'web-mode)) '("\\.phtml\\'" "\\.tpl\\.php\\'" "\\.[agj]sp\\'" "\\.as[cp]x\\'" "\\.erb\\'" "\\.mustache\\'"))))
 	    (mapc (lambda (x) (add-to-list 'auto-mode-alist x)) glsl-stuff)))
-  
 
-(use-package company-mode
+
+(use-package company
+  :ensure t
   :diminish company-mode
   :hook (after-init . global-company-mode)
   :bind
@@ -168,15 +176,16 @@
   (company-tooltip-align-annotations t))
 
 
-(use-package neotree
+(use-package neotree 
+  :ensure t
   :bind ("C-c 8" . neotree-toggle))
 
 (use-package undo-tree
-	     :diminish undo-tree-mode
-	     :config
-	     (global-undo-tree-mode)
-	     (setq undo-tree-visualizer-timestamps t)
-	     (setq undo-tree-visualizer-diff t))
+  :diminish undo-tree-mode
+  :config
+  (global-undo-tree-mode)
+  (setq undo-tree-visualizer-timestamps t)
+  (setq undo-tree-visualizer-diff t))
 
 ;;-------------------------------custom functions---------------------------------
 
