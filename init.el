@@ -21,7 +21,7 @@
 		  (and required
 		       (require required)))
 	(error (warn (format "package %s failed to load" required)))))))
-;
+
 (package-initialize)
 
 (unless package-archive-contents
@@ -53,6 +53,7 @@
 			  'neotree
 			  'elpy
 			  'anaconda-mode
+			  'org
 
 			  ;;Themes
 			  'ample-theme
@@ -63,12 +64,17 @@
 
 ;;---------------------------------use package------------------------------------
 
+(use-package org
+  :config (add-to-list 'auto-mode-list '("\\.org\\'" . org-mode))
+  :bind
+  ("C-c o l" . org-store-link)
+  ("C-c o a" . org-agenda))
+  
 (use-package elpy
   :ensure t
   :defer t
   :init
   (advice-add 'python-mode :before 'elpy-enable))
-
 
 ;; M-. find definitions
 ;; C-x 4 find definitions other window
