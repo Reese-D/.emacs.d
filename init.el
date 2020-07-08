@@ -152,7 +152,21 @@
 
 (use-package company-mode
   :diminish company-mode
-  :hook (after-init . global-company-mode))
+  :hook (after-init . global-company-mode)
+  :bind
+  (:map company-active-map
+	("RET" . nil)
+	([return] . nil)
+	("TAB" . company-complete-selection)
+	([tab] . company-complete-selection)
+	("<right>" . company-complete-common))
+  :custom
+  (company-dabbrev-downcase nil)
+  (company-idle-delay .2)
+  (company-minimum-prefix-length 1)
+  (company-require-match nil)
+  (company-tooltip-align-annotations t))
+
 
 (use-package neotree
   :bind ("C-c 8" . neotree-toggle))
