@@ -17,25 +17,26 @@
   (dolist (required list)
     (unless (package-installed-p required)
       (condition-case nil
-	  (progn  (package-install required)
-		  (and required
-		       (require required)))
-	(error (warn (format "package %s failed to load" required)))))))
+          (progn
+            (package-install required)
+            (and required (require required)))
+        (error (warn (format "package %s failed to load" required)))))))
 
 (package-initialize)
 
 (unless package-archive-contents
   (package-refresh-contents))
 
-(add-and-require-multiple 'use-package	;used below
-
-			  ;;use-package can't find these, so try other repos
-			  'undo-tree
-
-			  ;;Themes
-			  'ample-theme
-			  'monokai-theme
-			  )
+(add-and-require-multiple
+ 'use-package ;can't include itself
+ 
+ ;;use-package can't find these, so try other repos
+ 'undo-tree
+ 'smart-tabs-mode
+ 
+ ;;Themes
+ 'ample-theme
+ 'monokai-theme)
 
 ;;---------------------------------use package------------------------------------
 (use-package alchemist
@@ -46,14 +47,25 @@
   :ensure t)
 (use-package transpose-frame
   :ensure t)
-(use-package inf-ruby	;run ruby in emacs with M-x inf-ruby
+(use-package inf-ruby   ;run ruby in emacs with M-x inf-ruby
   :ensure t)
 (use-package magit-popup
   :ensure t)
-(use-package magit	;for git merges
+(use-package magit
   :ensure t)
 (use-package delight
   :ensure t)
+
+(use-package smart-tabs-mode
+  :ensure t
+  :hook
+  (common-lisp-mode . smart-tabs)
+  :config
+  (progn
+    (setq-default indent-tabs-mode nil)
+    (smart-tabs-insinuate 'python)
+    (setq backward-delete-char-untabify-method nil)
+    (smart-tabs-advice python-indent-line-1 python-indent)))
 
 (use-package org
   :ensure t
@@ -75,13 +87,13 @@
 ;; M-. show doc
 (use-package anaconda-mode
   :ensure t
-  :init (defun anaconda-autocomplete-hook ()
-   	  (local-set-key (kbd "C-<tab>") 'anaconda-mode-complete))
+  :init
+  (defun anaconda-autocomplete-hook ()
+    (local-set-key (kbd "C-<tab>") 'anaconda-mode-complete))
   :hook (progn
-	  (python-mode . anaconda-mode)
-	  (python-mode . anaconda-eldoc-mode)
-	  (python-mode . anaconda-autocomplete-hook)))
-
+          (python-mode . anaconda-mode)
+          (python-mode . anaconda-eldoc-mode)
+          (python-mode . anaconda-autocomplete-hook)))
 
 (use-package multiple-cursors
   :ensure t
@@ -121,7 +133,6 @@
   (setq inferior-lisp-program "/usr/bin/sbcl")
   (setq slime-contribs '(slime-fancy)))
 
-
 (use-package ace-jump-mode
   :ensure t
   :diminish ace-jump-mode
@@ -130,19 +141,19 @@
 (use-package rainbow-delimiters
   :ensure t
   :config (progn
-	    (defface my-outermost-paren-face
-	      '((t (:weight bold)))
-	      "Face used for outermost parens.")
-	    (use-package cl-lib
-	      :ensure t)
-	    (use-package color
-	      :ensure t)
-	    (show-paren-mode)
-	    (cl-loop
-	     for index from 1 to rainbow-delimiters-max-face-count
-	     do
-	     (let ((face (intern (format "rainbow-delimiters-depth-%d-face" index))))
-	       (cl-callf color-saturate-name (face-foreground face) 30))))
+            (defface my-outermost-paren-face
+              '((t (:weight bold)))
+              "Face used for outermost parens.")
+            (use-package cl-lib
+              :ensure t)
+            (use-package color
+              :ensure t)
+            (show-paren-mode)
+            (cl-loop
+             for index from 1 to rainbow-delimiters-max-face-count
+             do
+             (let ((face (intern (format "rainbow-delimiters-depth-%d-face" index))))
+               (cl-callf color-saturate-name (face-foreground face) 30))))
   :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package web-mode
@@ -153,8 +164,8 @@
   (use-package web-mode
     :ensure t)
   :config (let ((glsl-stuff (mapcar (lambda (x) (cons x 'glsl-mode)) '("\\.glsl\\'" "\\.vert\\'" "\\.frag\\'" "\\.geom\\'")))
-		(web-stuff (mapcar (lambda (x) (cons x 'web-mode)) '("\\.phtml\\'" "\\.tpl\\.php\\'" "\\.[agj]sp\\'" "\\.as[cp]x\\'" "\\.erb\\'" "\\.mustache\\'"))))
-	    (mapc (lambda (x) (add-to-list 'auto-mode-alist x)) glsl-stuff)))
+                (web-stuff (mapcar (lambda (x) (cons x 'web-mode)) '("\\.phtml\\'" "\\.tpl\\.php\\'" "\\.[agj]sp\\'" "\\.as[cp]x\\'" "\\.erb\\'" "\\.mustache\\'"))))
+            (mapc (lambda (x) (add-to-list 'auto-mode-alist x)) glsl-stuff)))
 
 
 (use-package company
@@ -163,11 +174,11 @@
   :hook (after-init . global-company-mode)
   :bind
   (:map company-active-map
-	("RET" . nil)
-	([return] . nil)
-	("TAB" . company-complete-selection)
-	([tab] . company-complete-selection)
-	("<right>" . company-complete-common))
+        ("RET" . nil)
+        ([return] . nil)
+        ("TAB" . company-complete-selection)
+        ([tab] . company-complete-selection)
+        ("<right>" . company-complete-common))
   :custom
   (company-dabbrev-downcase nil)
   (company-idle-delay .2)
@@ -192,15 +203,15 @@
 ;;; Define a default fullscreen and non full-screen mode, then add a function to toggle between the two
 (defun my-fullscreen ()
   (interactive)
-  (set-frame-parameter nil 'fullscreen 'fullboth)	;this makes the frame go fullscreen
-  (tool-bar-mode -1)					;these 3 lines turn off GUI junk
+  (set-frame-parameter nil 'fullscreen 'fullboth)       ;this makes the frame go fullscreen
+  (tool-bar-mode -1)                                    ;these 3 lines turn off GUI junk
   (menu-bar-mode -1))
 
 (defun my-non-fullscreen ()
   (interactive)
   (set-frame-parameter nil 'width 82)
   (set-frame-parameter nil 'fullscreen 'fullheight)
-  (menu-bar-mode t))					;I don't turn tool-bar and scroll-bar back on b/c I never want them
+  (menu-bar-mode t))                                    ;I don't turn tool-bar and scroll-bar back on b/c I never want them
 
 
 (defun toggle-fullscreen ()
@@ -251,12 +262,12 @@
 (load custom-file)
 
 ;;---------------------------------Custom  Themes---------------------------------
-(load-theme 'wombat t)		;neutral dark color scheme
-(load-theme 'tsdh-dark t)	;another default emacs dark color scheme
+(load-theme 'wombat t)          ;neutral dark color scheme
+(load-theme 'tsdh-dark t)       ;another default emacs dark color scheme
 (load-theme 'monokai t)
-(load-theme 'ample t t)		;these are all pretty nice, each gets a little lighter
+(load-theme 'ample t t)         ;these are all pretty nice, each gets a little lighter
 (load-theme 'ample-flat t t)
-(load-theme 'ample-light t t)	;tan background
+(load-theme 'ample-light t t)   ;tan background
 
-(enable-theme 'monokai)	;our chosen theme, pick whatever you like
+(enable-theme 'monokai) ;our chosen theme, pick whatever you like
 
