@@ -15,12 +15,13 @@
 
 (defun add-and-require-multiple (&rest list)
   (dolist (required list)
-    (progn
-      (unless (package-installed-p required)
-	(package-install required))
-      (and required
-	   (require required)))))
-
+    (unless (package-installed-p required)
+      (condition-case nil
+	  (progn  (package-install required)
+		  (and required
+		       (require required)))
+	(error (warn (format "package %s failed to load" required)))))))
+;
 (package-initialize)
 
 (unless package-archive-contents
@@ -52,7 +53,7 @@
 			  'neotree
 			  'elpy
 			  'anaconda-mode
-			  
+
 			  ;;Themes
 			  'ample-theme
 			  'monokai-theme
