@@ -28,6 +28,6 @@ All custom keybindings can be found in the init.el file.
 
 ** init.el documentation
 
-Since the init.el file is managed with org mode, i've created a markdown file in the home directory (init.md) that includes some documentation
+Since the [[file:init.el][init.el]] file is managed with org mode, i've created a markdown file in the home directory [[file:init.md][init.md]] that includes some documentation
 
 
