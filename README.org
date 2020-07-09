@@ -9,7 +9,7 @@ Just clone this file in your home directory (~)
 
 Emacs automatically looks for a file on the path ~/.emacs.d/init.el on startup
 
-The init file is also setup to load in any files from the custom_elisp folder as well as the custom.el file
+The init file is also setup to load in any files from the custom\under{}elisp folder as well as the custom.el file
 
 Don't edit the custom.el file, it's automatically generated
 
