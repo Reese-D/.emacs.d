@@ -39,8 +39,8 @@
  'monokai-theme)
 
 ;;---------------------------------use package------------------------------------
-(use-package redspace-mode)
-
+(use-package redspace-mode
+  :bind ("C-c 1" . redspace-mode))
 (use-package alchemist
   :ensure t)
 (use-package diminish
@@ -57,6 +57,19 @@
   :ensure t)
 (use-package delight
   :ensure t)
+
+(use-package fill-column-indicator
+  :init
+  (define-globalized-minor-mode global-fci-mode fci-mode
+    (lambda () (fci-mode 1)))
+  :hook
+  (python-mode . fci-mode)
+  :bind ("C-c 2" . fci-mode)
+  :config
+  (progn
+    (setq fci-rule-width 1)
+    (setq fci-rule-color "darkblue")
+    (setq fci-rule-column 120)))
 
 (use-package smart-tabs-mode
   :ensure t
