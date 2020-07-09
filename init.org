@@ -1,3 +1,17 @@
+#+PROPERTY: header-args :tangle yes
+#+TITLE: Init.el file
+#+AUTHOR: Reese De Wind
+
+* Editing this file
+
+| command     | definitions       |
+|-------------+-------------------|
+| C-c C-v C-t | Tangle to init.el |
+| C-c C-e     | Export            |
+
+* Require 
+this requires all the different archives we might use sets them up
+#+BEGIN_SRC emacs-lisp :tangle init.el
 ;;useful tips
 ;;C-h k --type this then any other command, and it will tell you the name of the command assigned to that hotkey as well as a description
 ;;C-h w --reverse of C-h k, type in the name of any command and it will tell you the keybinding for it
@@ -17,7 +31,12 @@
 
 (unless package-archive-contents
   (package-refresh-contents))
+#+END_SRC
 
+** add and require multiple
+This is a helper function that attempts to install a list of packages
+it will catch and warn about any packages that can't be found
+#+BEGIN_SRC emacs-lisp :tangle init.el
 (defun add-and-require-multiple (&rest list)
   (dolist (required list)
     (unless (package-installed-p required)
@@ -26,7 +45,11 @@
             (package-install required)
             (and required (require required)))
         (error (warn (format "package %s failed to load" required)))))))
+#+END_SRC
 
+Here we use that function to add any packages that we need that can't be installed by use-package
+as well as the installation of use-package itself
+#+BEGIN_SRC emacs-lisp :tangle init.el
 (add-and-require-multiple
  'use-package ;can't include itself
 
@@ -37,7 +60,11 @@
  ;;Themes
  'ample-theme
  'monokai-theme)
+#+END_SRC
 
+* Packages
+Here are all the simply includes that don't need much or any configuration
+#+BEGIN_SRC emacs-lisp :tangle init.el
 ;;---------------------------------use package------------------------------------
 (use-package redspace-mode
   :bind ("C-c 1" . redspace-mode))
@@ -57,7 +84,13 @@
   :ensure t)
 (use-package delight
   :ensure t)
+#+END_SRC
 
+** simple code formatting modes
+Fill column indicator draws a horizontal line at a specified column distance
+This is used for projects to avoid line wrapping
+
+#+BEGIN_SRC emacs-lisp :tangle init.el
 (use-package fill-column-indicator
   :init
   (define-globalized-minor-mode global-fci-mode fci-mode
@@ -70,7 +103,10 @@
     (setq fci-rule-width 1)
     (setq fci-rule-color "darkblue")
     (setq fci-rule-column 120)))
+#+END_SRC
 
+Smart tabs, auto for python and just use spaces instead of tabs for everything else
+#+BEGIN_SRC emacs-lisp :tangle init.el
 (use-package smart-tabs-mode
   :ensure t
   :hook
@@ -81,7 +117,11 @@
     (smart-tabs-insinuate 'python)
     (setq backward-delete-char-untabify-method nil)
     (smart-tabs-advice python-indent-line-1 python-indent)))
+#+END_SRC
 
+Org mode, used for this file
+[[https://www.youtube.com/watch?v=SzA2YODtgK4&t=1533s][Youtube tutorial and features]]
+#+BEGIN_SRC emacs-lisp :tangle init.el
 (use-package org
   :ensure t
   :config
@@ -96,7 +136,10 @@
   :bind
   ("C-c o l" . org-store-link)
   ("C-c o a" . org-agenda))
+#+END_SRC
 
+Some python magic for finding files, code info, etc
+#+BEGIN_SRC emacs-lisp :tangle init.el
 (use-package elpy
   :ensure t
   :ensure t
@@ -117,7 +160,10 @@
           (python-mode . anaconda-mode)
           (python-mode . anaconda-eldoc-mode)
           (python-mode . anaconda-autocomplete-hook)))
+#+END_SRC
 
+For all those lisp parenthesis
+#+BEGIN_SRC emacs-lisp :tangle init.el
 (use-package rainbow-delimiters
   :ensure t
   :config (progn
@@ -135,7 +181,10 @@
              (let ((face (intern (format "rainbow-delimiters-depth-%d-face" index))))
                (cl-callf color-saturate-name (face-foreground face) 30))))
   :hook (prog-mode . rainbow-delimiters-mode))
+#+END_SRC
 
+Syntax highlighting for editing web files
+#+BEGIN_SRC emacs-lisp :tangle init.el
 (use-package web-mode
   :ensure t
   :init
@@ -146,7 +195,11 @@
   :config (let ((glsl-stuff (mapcar (lambda (x) (cons x 'glsl-mode)) '("\\.glsl\\'" "\\.vert\\'" "\\.frag\\'" "\\.geom\\'")))
                 (web-stuff (mapcar (lambda (x) (cons x 'web-mode)) '("\\.phtml\\'" "\\.tpl\\.php\\'" "\\.[agj]sp\\'" "\\.as[cp]x\\'" "\\.erb\\'" "\\.mustache\\'"))))
             (mapc (lambda (x) (add-to-list 'auto-mode-alist x)) glsl-stuff)))
+#+END_SRC
 
+** code editing
+Editing multiple lines at once
+#+BEGIN_SRC emacs-lisp :tangle init.el
 (use-package multiple-cursors
   :ensure t
   :bind
@@ -154,7 +207,10 @@
   ("C-c n" . mc/mark-next-like-this)
   ("C-c p" . mc/mark-previous.like-this)
   ("C-c a" . mc/mark-more-like-this-extended))
+#+END_SRC
 
+pre-defined code snippets
+#+BEGIN_SRC emacs-lisp :tangle init.el
 (use-package yasnippet
   :ensure t
   :config
@@ -162,7 +218,10 @@
     (yas-global-mode 1)
     (use-package yasnippet-snippets
       :ensure t)))
+#+END_SRC
 
+** Auto complete
+#+BEGIN_SRC emacs-lisp :tangle init.el
 (use-package company
   :ensure t
   :diminish company-mode
@@ -180,7 +239,11 @@
   (company-minimum-prefix-length 1)
   (company-require-match nil)
   (company-tooltip-align-annotations t))
+#+END_SRC
 
+** Navigation
+Finding usage of code
+#+BEGIN_SRC emacs-lisp :tangle init.el
 (use-package dumb-jump
   :ensure t
   :bind
@@ -191,17 +254,26 @@
   ("M-i o" . dumb-jump-go-other-window)
   ("M-i e" . dumb-jump-go-prefer-external)
   ("M-i w" . dumbp-jump-g-prefer-external-other-window))
+#+END_SRC
 
+Jump around in a project
+#+BEGIN_SRC emacs-lisp :tangle init.el
 (use-package projectile
   :ensure t
   :config
   (projectile-global-mode 1))
+#+END_SRC
 
+Amazing
+#+BEGIN_SRC emacs-lisp :tangle init.el
 (use-package ace-jump-mode
   :ensure t
   :diminish ace-jump-mode
   :bind ("C-c SPC" . ace-jump-mode))
+#+END_SRC
 
+file tree visualizer
+#+BEGIN_SRC emacs-lisp :tangle init.el
 (use-package neotree
   :ensure t
   :bind ("C-c 8" . neotree-toggle))
@@ -212,13 +284,21 @@
   (global-undo-tree-mode)
   (setq undo-tree-visualizer-timestamps t)
   (setq undo-tree-visualizer-diff t))
+#+END_SRC
 
+** Interactive environments
+common lisp environment
+#+BEGIN_SRC emacs-lisp :tangle init.el
 (use-package slime
   :ensure t
   :config
   (setq inferior-lisp-program "/usr/bin/sbcl")
   (setq slime-contribs '(slime-fancy)))
+#+END_SRC
 
+* Custom functions
+
+#+BEGIN_SRC emacs-lisp :tangle init.el
 ;;-------------------------------custom functions---------------------------------
 
 ;;; Define a default fullscreen and non full-screen mode, then add a function to toggle between the two
@@ -246,7 +326,12 @@
   "Copy the full path of the current buffer."
   (interactive)
   (kill-new (buffer-file-name (window-buffer (minibuffer-selected-window)))))
+#+END_SRC
 
+* Keybindings
+This is for keybindings that aren't package-specific
+
+#+BEGIN_SRC emacs-lisp :tangle init.el
 ;;---------------------------------keybindings------------------------------------
 
 (setq next-line-add-newlines t) ;C-n now adds newline if at end of buffer
@@ -257,7 +342,12 @@
 ;; Different keybinds for macros
 (global-set-key (kbd "C-c r s") 'kmacro-start-macro-or-insert-counter)
 (global-set-key (kbd "C-c r e") 'kmacro-end-or-call-macro)
+#+END_SRC
 
+* Initialize settings
+Set some indentation for specific modes, and start emacs fullscreen
+
+#+BEGIN_SRC emacs-lisp :tangle init.el
 ;;---------------------------------Initialization---------------------------------
 
 (toggle-fullscreen)
@@ -269,7 +359,12 @@
 
 ;;make c indent 4 by default instead of 2
 (setq-default c-basic-offset 4)
+#+END_SRC
 
+I don't want custom stuff being auto-incuded in init.el to keep it clean, so I create a custom file here
+create the file if it doesn't exist and set it as my custom file
+
+#+BEGIN_SRC emacs-lisp :tangle init.el
 ;;(setq mac-option-modifier 'meta)  ;enable this if using a mac
 (defconst custom-file (expand-file-name "custom.el" user-emacs-directory))
 
@@ -278,7 +373,12 @@
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
+#+END_SRC
 
+* Themes
+These are all pretty much dark themes, except for ample-light 
+
+#+BEGIN_SRC emacs-lisp :tangle init.el
 ;;---------------------------------Custom  Themes---------------------------------
 (load-theme 'wombat t)          ;neutral dark color scheme
 (load-theme 'tsdh-dark t)       ;another default emacs dark color scheme
@@ -288,3 +388,5 @@
 (load-theme 'ample-light t t)   ;tan background
 
 (enable-theme 'monokai) ;our chosen theme, pick whatever you like
+#+END_SRC
+
