@@ -29,16 +29,18 @@
 
 (add-and-require-multiple
  'use-package ;can't include itself
- 
+
  ;;use-package can't find these, so try other repos
  'undo-tree
  'smart-tabs-mode
- 
+
  ;;Themes
  'ample-theme
  'monokai-theme)
 
 ;;---------------------------------use package------------------------------------
+(use-package redspace-mode)
+
 (use-package alchemist
   :ensure t)
 (use-package diminish
@@ -103,7 +105,7 @@
   ("C-c p" . mc/mark-previous.like-this)
   ("C-c a" . mc/mark-more-like-this-extended))
 
-(use-package dumb-jump 
+(use-package dumb-jump
   :ensure t
   :bind
   ("M-i" . nil);; Remove the old keybinding tab-to-tab-stop
@@ -187,7 +189,7 @@
   (company-tooltip-align-annotations t))
 
 
-(use-package neotree 
+(use-package neotree
   :ensure t
   :bind ("C-c 8" . neotree-toggle))
 
