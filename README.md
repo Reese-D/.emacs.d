@@ -1,23 +1,23 @@
 
 # Table of Contents
 
-1.  [Emacs Configuration](#orgbe7f2bb)
-    1.  [Initialization](#orgf7ecbc0)
-    2.  [What's up with the zip file?](#org82f7fa8)
-    3.  [.org files](#org73a0636)
-    4.  [Keybindings](#org14675d5)
-    5.  [init.el documentation](#org2d3ae0a)
+1.  [Emacs Configuration](#org38be69a)
+    1.  [Initialization](#org26ac887)
+    2.  [What's up with the zip file?](#org8b222ef)
+    3.  [.org files](#org84e35c5)
+    4.  [Keybindings](#orgb925c41)
+    5.  [init.el documentation](#org0723d77)
 
 
 
-<a id="orgbe7f2bb"></a>
+<a id="org38be69a"></a>
 
 # Emacs Configuration
 
-Tested with emacs version 26.3 in Debian 9 (windows subshell) & 10
+Tested with [emacs version 26.3](http://gnu.mirror.constant.com/emacs/emacs-26.3.tar.gz) in Debian 9 (windows subshell) & 10
 
 
-<a id="orgf7ecbc0"></a>
+<a id="org26ac887"></a>
 
 ## Initialization
 
@@ -30,32 +30,32 @@ The init file is also setup to load in any files from the custom<sub>elisp</sub>
 Don't edit the custom.el file, it's automatically generated
 
 
-<a id="org82f7fa8"></a>
+<a id="org8b222ef"></a>
 
 ## What's up with the zip file?
 
 It's a backup, you can unzip it to make sure you have the same elpa directory used in testing, or you can just leave it alone/delete it
 
-The elpa file should automatically regenerate
+If you don't unzip the file, the elpa folder should automatically regenerate the first time you run emacs
 
 
-<a id="org73a0636"></a>
+<a id="org84e35c5"></a>
 
 ## .org files
 
 These are used to manage the README (this file) and the init.el files
 
 
-<a id="org14675d5"></a>
+<a id="orgb925c41"></a>
 
 ## Keybindings
 
 All custom keybindings can be found in the init.el file. 
 
 
-<a id="org2d3ae0a"></a>
+<a id="org0723d77"></a>
 
 ## init.el documentation
 
-Since the init.el file is managed with org mode, i've created a markdown file to give simple documentation of the file.
+Since the init.el file is managed with org mode, i've created a markdown file in the home directory (init.md) that includes some documentation
 

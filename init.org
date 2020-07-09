@@ -33,7 +33,7 @@ this requires all the different archives we might use sets them up
   (package-refresh-contents))
 #+END_SRC
 
-** add and require multiple
+** Add and require multiple
 This is a helper function that attempts to install a list of packages
 it will catch and warn about any packages that can't be found
 #+BEGIN_SRC emacs-lisp :tangle init.el
@@ -63,11 +63,10 @@ as well as the installation of use-package itself
 #+END_SRC
 
 * Packages
-Here are all the simply includes that don't need much or any configuration
+
+** Misc
 #+BEGIN_SRC emacs-lisp :tangle init.el
 ;;---------------------------------use package------------------------------------
-(use-package redspace-mode
-  :bind ("C-c 1" . redspace-mode))
 (use-package alchemist
   :ensure t)
 (use-package diminish
@@ -86,7 +85,7 @@ Here are all the simply includes that don't need much or any configuration
   :ensure t)
 #+END_SRC
 
-** simple code formatting modes
+** Code formatting
 Fill column indicator draws a horizontal line at a specified column distance
 This is used for projects to avoid line wrapping
 
@@ -103,6 +102,12 @@ This is used for projects to avoid line wrapping
     (setq fci-rule-width 1)
     (setq fci-rule-color "darkblue")
     (setq fci-rule-column 120)))
+#+END_SRC
+
+Optionally highlight trailing whitespace in red
+#+BEGIN_SRC emacs-lisp :tangle init.el
+(use-package redspace-mode
+  :bind ("C-c 1" . redspace-mode))
 #+END_SRC
 
 Smart tabs, auto for python and just use spaces instead of tabs for everything else
@@ -197,7 +202,7 @@ Syntax highlighting for editing web files
             (mapc (lambda (x) (add-to-list 'auto-mode-alist x)) glsl-stuff)))
 #+END_SRC
 
-** code editing
+** Code editing
 Editing multiple lines at once
 #+BEGIN_SRC emacs-lisp :tangle init.el
 (use-package multiple-cursors
@@ -272,12 +277,16 @@ Amazing
   :bind ("C-c SPC" . ace-jump-mode))
 #+END_SRC
 
-file tree visualizer
+File tree visualizer
 #+BEGIN_SRC emacs-lisp :tangle init.el
 (use-package neotree
   :ensure t
   :bind ("C-c 8" . neotree-toggle))
+#+END_SRC
 
+Undo tree shows a history of all undo's and re-do's. Since emacs has a smart undo instead of a linear undo system, this really helps.
+This will automatically show up when you undo (C-x u)
+#+BEGIN_SRC emacs-lisp :tangle init.el
 (use-package undo-tree
   :diminish undo-tree-mode
   :config

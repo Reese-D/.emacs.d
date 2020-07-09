@@ -2,7 +2,7 @@
 #+PROPERTY: tangle README.md
 
 * Emacs Configuration
-Tested with emacs version 26.3 in Debian 9 (windows subshell) & 10
+Tested with [[http://gnu.mirror.constant.com/emacs/emacs-26.3.tar.gz][emacs version 26.3]] in Debian 9 (windows subshell) & 10
 
 ** Initialization
 Just clone this file in your home directory (~)
@@ -16,10 +16,10 @@ Don't edit the custom.el file, it's automatically generated
 ** What's up with the zip file?
 It's a backup, you can unzip it to make sure you have the same elpa directory used in testing, or you can just leave it alone/delete it
 
-The elpa file should automatically regenerate
+If you don't unzip the file, the elpa folder should automatically regenerate the first time you run emacs
 
 ** .org files
-
+   
 These are used to manage the README (this file) and the init.el files
 
 ** Keybindings
@@ -28,6 +28,6 @@ All custom keybindings can be found in the init.el file.
 
 ** init.el documentation
 
-Since the init.el file is managed with org mode, i've created a markdown file to give simple documentation of the file.
+Since the init.el file is managed with org mode, i've created a markdown file in the home directory (init.md) that includes some documentation
 
 

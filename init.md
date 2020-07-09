@@ -1,23 +1,24 @@
 
 # Table of Contents
 
-1.  [Editing this file](#org3f13183)
-2.  [Require](#orgbc8ad52)
-    1.  [add and require multiple](#org5915d61)
-3.  [Packages](#orgaf3ef60)
-    1.  [simple code formatting modes](#orgd5684e9)
-    2.  [code editing](#org8446003)
-    3.  [Auto complete](#org3ab5282)
-    4.  [Navigation](#orgfd02d6d)
-    5.  [Interactive environments](#orge196d00)
-4.  [Custom functions](#org7ffbd18)
-5.  [Keybindings](#orgc597423)
-6.  [Initialize settings](#org1d56aee)
-7.  [Themes](#org5e97e42)
+1.  [Editing this file](#org40840f6)
+2.  [Require](#org0b10954)
+    1.  [Add and require multiple](#org56149f6)
+3.  [Packages](#org5b3974f)
+    1.  [Misc](#orgfe11ce3)
+    2.  [Code formatting](#org57d6c47)
+    3.  [Code editing](#org9e821cc)
+    4.  [Auto complete](#orgf828764)
+    5.  [Navigation](#org4c67133)
+    6.  [Interactive environments](#org62b3c81)
+4.  [Custom functions](#org0df8b6a)
+5.  [Keybindings](#org05dc446)
+6.  [Initialize settings](#org87568c9)
+7.  [Themes](#org9f2105a)
 
 
 
-<a id="org3f13183"></a>
+<a id="org40840f6"></a>
 
 # Editing this file
 
@@ -51,7 +52,7 @@
 </table>
 
 
-<a id="orgbc8ad52"></a>
+<a id="org0b10954"></a>
 
 # Require
 
@@ -78,9 +79,9 @@ this requires all the different archives we might use sets them up
       (package-refresh-contents))
 
 
-<a id="org5915d61"></a>
+<a id="org56149f6"></a>
 
-## add and require multiple
+## Add and require multiple
 
 This is a helper function that attempts to install a list of packages
 it will catch and warn about any packages that can't be found
@@ -109,15 +110,16 @@ as well as the installation of use-package itself
      'monokai-theme)
 
 
-<a id="orgaf3ef60"></a>
+<a id="org5b3974f"></a>
 
 # Packages
 
-Here are all the simply includes that don't need much or any configuration
+
+<a id="orgfe11ce3"></a>
+
+## Misc
 
     ;;---------------------------------use package------------------------------------
-    (use-package redspace-mode
-      :bind ("C-c 1" . redspace-mode))
     (use-package alchemist
       :ensure t)
     (use-package diminish
@@ -136,9 +138,9 @@ Here are all the simply includes that don't need much or any configuration
       :ensure t)
 
 
-<a id="orgd5684e9"></a>
+<a id="org57d6c47"></a>
 
-## simple code formatting modes
+## Code formatting
 
 Fill column indicator draws a horizontal line at a specified column distance
 This is used for projects to avoid line wrapping
@@ -155,6 +157,11 @@ This is used for projects to avoid line wrapping
         (setq fci-rule-width 1)
         (setq fci-rule-color "darkblue")
         (setq fci-rule-column 120)))
+
+Optionally highlight trailing whitespace in red
+
+    (use-package redspace-mode
+      :bind ("C-c 1" . redspace-mode))
 
 Smart tabs, auto for python and just use spaces instead of tabs for everything else
 
@@ -244,9 +251,9 @@ Syntax highlighting for editing web files
                 (mapc (lambda (x) (add-to-list 'auto-mode-alist x)) glsl-stuff)))
 
 
-<a id="org8446003"></a>
+<a id="org9e821cc"></a>
 
-## code editing
+## Code editing
 
 Editing multiple lines at once
 
@@ -269,7 +276,7 @@ pre-defined code snippets
           :ensure t)))
 
 
-<a id="org3ab5282"></a>
+<a id="orgf828764"></a>
 
 ## Auto complete
 
@@ -292,7 +299,7 @@ pre-defined code snippets
       (company-tooltip-align-annotations t))
 
 
-<a id="orgfd02d6d"></a>
+<a id="org4c67133"></a>
 
 ## Navigation
 
@@ -323,12 +330,15 @@ Amazing
       :diminish ace-jump-mode
       :bind ("C-c SPC" . ace-jump-mode))
 
-file tree visualizer
+File tree visualizer
 
     (use-package neotree
       :ensure t
       :bind ("C-c 8" . neotree-toggle))
-    
+
+Undo tree shows a history of all undo's and re-do's. Since emacs has a smart undo instead of a linear undo system, this really helps.
+This will automatically show up when you undo (C-x u)
+
     (use-package undo-tree
       :diminish undo-tree-mode
       :config
@@ -337,7 +347,7 @@ file tree visualizer
       (setq undo-tree-visualizer-diff t))
 
 
-<a id="orge196d00"></a>
+<a id="org62b3c81"></a>
 
 ## Interactive environments
 
@@ -350,7 +360,7 @@ common lisp environment
       (setq slime-contribs '(slime-fancy)))
 
 
-<a id="org7ffbd18"></a>
+<a id="org0df8b6a"></a>
 
 # Custom functions
 
@@ -383,7 +393,7 @@ common lisp environment
       (kill-new (buffer-file-name (window-buffer (minibuffer-selected-window)))))
 
 
-<a id="orgc597423"></a>
+<a id="org05dc446"></a>
 
 # Keybindings
 
@@ -401,7 +411,7 @@ This is for keybindings that aren't package-specific
     (global-set-key (kbd "C-c r e") 'kmacro-end-or-call-macro)
 
 
-<a id="org1d56aee"></a>
+<a id="org87568c9"></a>
 
 # Initialize settings
 
@@ -432,7 +442,7 @@ create the file if it doesn't exist and set it as my custom file
     (load custom-file)
 
 
-<a id="org5e97e42"></a>
+<a id="org9f2105a"></a>
 
 # Themes
 
