@@ -86,8 +86,14 @@ as well as the installation of use-package itself
 #+END_SRC
 
 ** Code formatting
+
+#+BEGIN_SRC emacs-lisp :tangle init.el
+(use-package lsp-mode
+  :ensure t)
+#+END_SRC
 Fill column indicator draws a horizontal line at a specified column distance
 This is used for projects to avoid line wrapping
+
 
 #+BEGIN_SRC emacs-lisp :tangle init.el
 (use-package fill-column-indicator
