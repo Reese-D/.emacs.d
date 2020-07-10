@@ -33,7 +33,7 @@ Since the [[file:init.el][init.el]] file is managed with org mode, i've created 
 
 * Common emacs commands for those who are new
 
-*** Simple definitions by example
+** Simple definitions by example
 : M stands for "Meta" and by default is the alt key
 : C stands for "Control" and is default the control key
 
@@ -46,8 +46,8 @@ Since the [[file:init.el][init.el]] file is managed with org mode, i've created 
 : C-M-e        Region is the word for selection
 : M-% or M-S-5 Means alt + shift + 5
 
-*** common commands
-**** movement commands
+** common commands
+*** movement commands
 : C-f move one character forwards
 : M-f move one word foreward
 : C-b move one character backwards
@@ -70,13 +70,13 @@ Since the [[file:init.el][init.el]] file is managed with org mode, i've created 
 : C-F1 remember position in code (all function keys)
 : F1   return to position in code
 : 
-**** file commands
+*** file commands
 : C-x C-s save current buffer
 : C-x C-w save to new file
 : C-x C-f find file
 : C-x C-c quit emacs
 
-**** copy/paste
+*** copy/paste
 : C-k kill-line: delete the rest of the current line
 : C-@ set-mark-command: mark is used to indicate the beginning of an area of text to be yanked
 : C-w kill-region: delete the area of text between the mark and the current cursor position
@@ -84,13 +84,13 @@ Since the [[file:init.el][init.el]] file is managed with org mode, i've created 
 : M-y yank-pop: cycle through your kill ring after yank
 : M-w copy-region-as-kill: copy area between mark and cursor into kill-buffer so that it can be yanked into someplace else (doesn't delete)
 
-**** window commands
+*** window commands
 : C-x 3 split window vertically
 : C-x 2 split window horizontally
 : C-x 1 kill all windows except the current window
 : C-x 0 kill only the current window
 : C-x o move to next window
 
-**** misc
+*** misc
 : C-g keyboard-quit: if while typing a command you make a mistake and want to stop, this aborts a command in progress
 
