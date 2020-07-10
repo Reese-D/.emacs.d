@@ -34,63 +34,63 @@ Since the [[file:init.el][init.el]] file is managed with org mode, i've created 
 * Common emacs commands for those who are new
 
 *** Simple definitions by example
-M stands for "Meta" and by default is the alt key
-C stands for "Control" and is default the control key
+: M stands for "Meta" and by default is the alt key
+: C stands for "Control" and is default the control key
 
-"Buffer" is the open text area, it's not called a window since you can split your screen into multiple buffers
+: "Buffer" is the open text area, it's not called a window since you can split your screen into multiple buffers
 
-C-f          Means hold Ctrl and press f
-M-p          Means hold alt (meta) and press p
-C-x f        Means hold Ctrl and press x, release Ctrl and press f
-C-x C-c      Means hold Ctrl and press x, keep Ctrl down andpress c
-C-M-e        Region is the word for selection
-M-% or M-S-5 Means alt + shift + 5
+: C-f          Means hold Ctrl and press f
+: M-p          Means hold alt (meta) and press p
+: C-x f        Means hold Ctrl and press x, release Ctrl and press f
+: C-x C-c      Means hold Ctrl and press x, keep Ctrl down andpress c
+: C-M-e        Region is the word for selection
+: M-% or M-S-5 Means alt + shift + 5
 
 *** common commands
 **** movement commands
-C-f move one character forwards
-M-f move one word foreward
-C-b move one character backwards
-M-b move one word backwards
+: C-f move one character forwards
+: M-f move one word foreward
+: C-b move one character backwards
+: M-b move one word backwards
 
-C-p move to previous line
-C-n move to next line
-C-a move to start of line
-C-e move to end of line
+: C-p move to previous line
+: C-n move to next line
+: C-a move to start of line
+: C-e move to end of line
 
-M-< move to the beginning of the buffer
-M-> move to end of buffer
-
-C-v page down
-M-v page up
-C-l center page on cursor (multiple clicks move it to top/bottom instead of center)
-
-M-^ move current line and append it to the prior line, removing all whitespace and adding back in a single space
-
-C-F1 remember position in code (all function keys)
-F1   return to position in code
-
+: M-< move to the beginning of the buffer
+: M-> move to end of buffer
+: 
+: C-v page down
+: M-v page up
+: C-l center page on cursor (multiple clicks move it to top/bottom instead of center)
+: 
+: M-^ move current line and append it to the prior line, removing all whitespace and adding back in a single space
+: 
+: C-F1 remember position in code (all function keys)
+: F1   return to position in code
+: 
 **** file commands
-C-x C-s save current buffer
-C-x C-w save to new file
-C-x C-f find file
-C-x C-c quit emacs
+: C-x C-s save current buffer
+: C-x C-w save to new file
+: C-x C-f find file
+: C-x C-c quit emacs
 
 **** copy/paste
-C-k kill-line: delete the rest of the current line
-C-@ set-mark-command: mark is used to indicate the beginning of an area of text to be yanked
-C-w kill-region: delete the area of text between the mark and the current cursor position
-C-y yank: insert at current cursor location whatever was most recently deleted
-M-y yank-pop: cycle through your kill ring after yank
-M-w copy-region-as-kill: copy area between mark and cursor into kill-buffer so that it can be yanked into someplace else (doesn't delete)
+: C-k kill-line: delete the rest of the current line
+: C-@ set-mark-command: mark is used to indicate the beginning of an area of text to be yanked
+: C-w kill-region: delete the area of text between the mark and the current cursor position
+: C-y yank: insert at current cursor location whatever was most recently deleted
+: M-y yank-pop: cycle through your kill ring after yank
+: M-w copy-region-as-kill: copy area between mark and cursor into kill-buffer so that it can be yanked into someplace else (doesn't delete)
 
 **** window commands
-C-x 3 split window vertically
-C-x 2 split window horizontally
-C-x 1 kill all windows except the current window
-C-x 0 kill only the current window
-C-x o move to next window
+: C-x 3 split window vertically
+: C-x 2 split window horizontally
+: C-x 1 kill all windows except the current window
+: C-x 0 kill only the current window
+: C-x o move to next window
 
 **** misc
-C-g keyboard-quit: if while typing a command you make a mistake and want to stop, this aborts a command in progress
+: C-g keyboard-quit: if while typing a command you make a mistake and want to stop, this aborts a command in progress
 
