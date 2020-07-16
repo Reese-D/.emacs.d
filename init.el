@@ -225,6 +225,10 @@
 
 ;;-------------------------------custom functions---------------------------------
 
+;;global minor modes
+(defun my-electric-mode-hook ()
+  (lambda () (electrict-pair-mode 1)))
+
 ;;; Define a default fullscreen and non full-screen mode, then add a function to toggle between the two
 (defun my-fullscreen ()
   (interactive)
@@ -267,6 +271,10 @@
 (toggle-fullscreen)
 (setq inhibit-startup-message t)
 (put 'upcase-region 'disabled nil)
+
+;;enable electric-pair-mode for lisps
+(add-hook 'common-lisp-mode-hook 'my-electric-mode-hook)
+(add-hook 'emacs-lisp-mode-hook 'my-electric-mode-hook)
 
 ;;this will indent switch statements in c
 (c-set-offset 'case-label '+)

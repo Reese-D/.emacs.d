@@ -7,3 +7,8 @@ custom.el
 transient/*
 
 network-security.data
+
+elpy/*
+anaconda-mode/*
+session.*
+.mc-lists.el
