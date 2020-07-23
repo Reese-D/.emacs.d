@@ -20,15 +20,14 @@ If you don't unzip the file, the elpa folder should automatically regenerate the
 
 ** .org files
    
-These are used to manage the README (this file) and the init.el files
+These are used to manage the README (this file)
+
+tangle: C-c C-v C-t
+export: C-c C-e
 
 ** Keybindings
 
 All custom keybindings can be found in the init.el file. 
-
-** init.el documentation
-
-Since the [[file:init.el][init.el]] file is managed with org mode, i've created a markdown file in the home directory [[file:init.md][init.md]] that includes some documentation
 
 
 * Common emacs commands for those who are new

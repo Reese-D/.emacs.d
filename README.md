@@ -1,31 +1,30 @@
 
 # Table of Contents
 
-1.  [Emacs Configuration](#org33eef64)
-    1.  [Initialization](#org95070d9)
-    2.  [What's up with the zip file?](#orgb4ff693)
-    3.  [.org files](#org3dd8118)
-    4.  [Keybindings](#orge73b06b)
-    5.  [init.el documentation](#org0d0f8c3)
-2.  [Common emacs commands for those who are new](#org345ffba)
-    1.  [Simple definitions by example](#org79d0044)
-    2.  [common commands](#org4cb45fa)
-        1.  [movement commands](#orgd03cbc2)
-        2.  [file commands](#org9517ba5)
-        3.  [copy/paste](#org040230b)
-        4.  [window commands](#org2caf867)
-        5.  [misc](#org83455df)
+1.  [Emacs Configuration](#org4fb142e)
+    1.  [Initialization](#org35aa45c)
+    2.  [What's up with the zip file?](#orgd51339e)
+    3.  [.org files](#org0429128)
+    4.  [Keybindings](#org9da14b9)
+2.  [Common emacs commands for those who are new](#orgd80ee92)
+    1.  [Simple definitions by example](#orga129eec)
+    2.  [common commands](#org09821ee)
+        1.  [movement commands](#orgeccad06)
+        2.  [file commands](#org816991c)
+        3.  [copy/paste](#org474300b)
+        4.  [window commands](#org91807a0)
+        5.  [misc](#orgd2a32db)
 
 
 
-<a id="org33eef64"></a>
+<a id="org4fb142e"></a>
 
 # Emacs Configuration
 
 Tested with [emacs version 26.3](http://gnu.mirror.constant.com/emacs/emacs-26.3.tar.gz) in Debian 9 (windows subshell) & 10
 
 
-<a id="org95070d9"></a>
+<a id="org35aa45c"></a>
 
 ## Initialization
 
@@ -38,7 +37,7 @@ The init file is also setup to load in any files from the custom_elisp folder as
 Don't edit the custom.el file, it's automatically generated
 
 
-<a id="orgb4ff693"></a>
+<a id="orgd51339e"></a>
 
 ## What's up with the zip file?
 
@@ -47,33 +46,29 @@ It's a backup, you can unzip it to make sure you have the same elpa directory us
 If you don't unzip the file, the elpa folder should automatically regenerate the first time you run emacs
 
 
-<a id="org3dd8118"></a>
+<a id="org0429128"></a>
 
 ## .org files
 
-These are used to manage the README (this file) and the init.el files
+These are used to manage the README (this file)
+
+tangle: C-c C-v C-t
+export: C-c C-e
 
 
-<a id="orge73b06b"></a>
+<a id="org9da14b9"></a>
 
 ## Keybindings
 
 All custom keybindings can be found in the init.el file. 
 
 
-<a id="org0d0f8c3"></a>
-
-## init.el documentation
-
-Since the [init.el](init.el) file is managed with org mode, i've created a markdown file in the home directory [init.md](init.md) that includes some documentation
-
-
-<a id="org345ffba"></a>
+<a id="orgd80ee92"></a>
 
 # Common emacs commands for those who are new
 
 
-<a id="org79d0044"></a>
+<a id="orga129eec"></a>
 
 ## Simple definitions by example
 
@@ -90,12 +85,12 @@ Since the [init.el](init.el) file is managed with org mode, i've created a markd
     M-% or M-S-5 Means alt + shift + 5
 
 
-<a id="org4cb45fa"></a>
+<a id="org09821ee"></a>
 
 ## common commands
 
 
-<a id="orgd03cbc2"></a>
+<a id="orgeccad06"></a>
 
 ### movement commands
 
@@ -122,7 +117,7 @@ Since the [init.el](init.el) file is managed with org mode, i've created a markd
     F1   return to position in code
 
 
-<a id="org9517ba5"></a>
+<a id="org816991c"></a>
 
 ### file commands
 
@@ -132,7 +127,7 @@ Since the [init.el](init.el) file is managed with org mode, i've created a markd
     C-x C-c quit emacs
 
 
-<a id="org040230b"></a>
+<a id="org474300b"></a>
 
 ### copy/paste
 
@@ -144,7 +139,7 @@ Since the [init.el](init.el) file is managed with org mode, i've created a markd
     M-w copy-region-as-kill: copy area between mark and cursor into kill-buffer so that it can be yanked into someplace else (doesn't delete)
 
 
-<a id="org2caf867"></a>
+<a id="org91807a0"></a>
 
 ### window commands
 
@@ -155,7 +150,7 @@ Since the [init.el](init.el) file is managed with org mode, i've created a markd
     C-x o move to next window
 
 
-<a id="org83455df"></a>
+<a id="orgd2a32db"></a>
 
 ### misc
 
