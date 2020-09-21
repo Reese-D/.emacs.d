@@ -74,6 +74,15 @@ All custom keybindings can be found in the init.el file.
 : C-x C-w save to new file
 : C-x C-f find file
 : C-x C-c quit emacs
+*** editing
+: M-[n] repeat command [n] times
+: C-u [n] repeat the next command [n] times
+: C-t transpose two characters
+: M-t transpose two words
+: C-x C-t transpose two lines
+: M-u uppercase letters from cursor to end of line
+: M-l opposte of M-u
+: M-c make first letter in word uppercase
 
 *** copy/paste
 : C-k kill-line: delete the rest of the current line
@@ -82,6 +91,34 @@ All custom keybindings can be found in the init.el file.
 : C-y yank: insert at current cursor location whatever was most recently deleted
 : M-y yank-pop: cycle through your kill ring after yank
 : M-w copy-region-as-kill: copy area between mark and cursor into kill-buffer so that it can be yanked into someplace else (doesn't delete)
+: C-d delete character forward
+: M-d delete word forward
+: M-Del delete word backwards
+
+*** macros
+: C-x ( start macro definition
+: C-x ) end of macro definition
+: C-x e execute last definied macro
+: C-x e execute last defined macro (can combine with C-u [n] or M-[n])
+: M-x name-last-kbd-macro give name to macro (for saving)
+: M-x insert-keyboard-macro save named macro into file
+: M-x load-file load macro
+: M-x macroname execute macroname
+
+*** programming
+: M C-\ indent region between cursor and mark
+: M-m move to first (non-space) char in this line
+: M-^ attach this line to previous
+: M-; formatize and indent comment
+: C-c C-c comment out marked area. 
+
+: M-x outline-minor-mode collapses function definitions in a file to a mere {...}
+: M-x show-subtree If you are in one of the collapsed functions, this un-collapses it In order to achive some of the feats coming up now you have to run etags *.c *.h *.cpp (or what ever ending you source files have) in the source directory
+: M-. If you are in a function call, this will take you to it's definition
+: M-x tags-search ENTER Searches through all you etaged
+: M-, jumps to the next occurrence for tags-search
+: M-x tags-query-replace yum. This lets you replace some text in all the tagged files
+ 
 
 *** window commands
 : C-x 3 split window vertically
