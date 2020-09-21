@@ -39,6 +39,8 @@
  'monokai-theme)
 
 ;;---------------------------------use package------------------------------------
+(use-package lua-mode
+  :ensure t)
 (use-package alchemist
   :ensure t)
 (use-package diminish
