@@ -39,6 +39,8 @@
  'monokai-theme)
 
 ;;---------------------------------use package------------------------------------
+(use-package fennel-mode
+  :ensure t)
 (use-package lua-mode
   :ensure t)
 (use-package alchemist
