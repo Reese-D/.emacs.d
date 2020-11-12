@@ -39,6 +39,13 @@
  'monokai-theme)
 
 ;;---------------------------------use package------------------------------------
+(use-package clojure-mode
+  :config (progn
+            (use-package clojure-mode-extra-font-locking
+              :ensure t))
+  :ensure t)
+(use-package go-mode
+  :ensure t)
 (use-package fennel-mode
   :ensure t)
 (use-package lua-mode
@@ -229,6 +236,10 @@
 
 ;;-------------------------------custom functions---------------------------------
 
+(defun switch-to-previous-buffer ()
+  (interactive)
+  (switch-to-buffer nil))
+
 ;;; Define a default fullscreen and non full-screen mode, then add a function to toggle between the two
 (defun my-fullscreen ()
   (interactive)
@@ -256,6 +267,7 @@
   (kill-new (buffer-file-name (window-buffer (minibuffer-selected-window)))))
 
 ;;---------------------------------keybindings------------------------------------
+(global-set-key (kbd "C-<backspace>") 'switch-to-previous-buffer)
 
 (setq next-line-add-newlines t) ;C-n now adds newline if at end of buffer
 (global-set-key (kbd "C-c f") 'toggle-fullscreen)
