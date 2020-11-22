@@ -1,6 +1,8 @@
 # key: emacs_ignore
 # name: emacs_ignore
 # --
+
+#emacs_ignore
 *~
 \#*\#
 *.elc
