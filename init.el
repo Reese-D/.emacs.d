@@ -41,6 +41,8 @@
 ;;---------------------------------use package------------------------------------
 (use-package clojure-mode
   :config (progn
+            (use-package cider
+              :ensure t)
             (use-package clojure-mode-extra-font-locking
               :ensure t))
   :ensure t)
@@ -267,7 +269,7 @@
   (kill-new (buffer-file-name (window-buffer (minibuffer-selected-window)))))
 
 ;;---------------------------------keybindings------------------------------------
-(global-set-key (kbd "C-<backspace>") 'switch-to-previous-buffer)
+(global-set-key (kbd "C-<delete>") 'switch-to-previous-buffer)
 
 (setq next-line-add-newlines t) ;C-n now adds newline if at end of buffer
 (global-set-key (kbd "C-c f") 'toggle-fullscreen)
