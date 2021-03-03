@@ -7,11 +7,11 @@
 (add-to-list 'load-path "~/.emacs.d/scripts")
 (add-to-list 'load-path "~/.emacs.d/custom_elisp/")
 
-(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
+;(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t)
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)
+;(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+;(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)
 
 (package-initialize)
 
@@ -36,9 +36,16 @@
 
  ;;Themes
  'ample-theme
- 'monokai-theme)
+ 'monokai-theme
+ 'gruvbox-theme
+ 'zenburn-theme
+ 'dracula-theme
+ 'nord-theme
+ )
 
 ;;---------------------------------use package------------------------------------
+(use-package terraform-mode
+  :ensure t)
 (use-package clojure-mode
   :config (progn
             (use-package cider
@@ -308,5 +315,10 @@
 (load-theme 'ample t t)         ;these are all pretty nice, each gets a little lighter
 (load-theme 'ample-flat t t)
 (load-theme 'ample-light t t)   ;tan background
+(load-theme 'gruvbox t)
+(load-theme 'gruvbox-dark-hard t)
+;;;(load-theme 'dracula t)
+(load-theme 'nord t)
 
-(enable-theme 'monokai) ;our chosen theme, pick whatever you like
+
+(enable-theme 'gruvbox-dark-hard) ;our chosen theme, pick whatever you like (my top picks are ample-flat, gruvbox-dark-hard, nord, and wombat)
