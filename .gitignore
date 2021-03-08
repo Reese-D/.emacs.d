@@ -6,6 +6,9 @@ elpa/*
 custom.el
 transient/*
 
+.cache/
+.lsp-session*
+
 network-security.data
 
 elpy/*
