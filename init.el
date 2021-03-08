@@ -3,15 +3,17 @@
 ;;C-h w --reverse of C-h k, type in the name of any command and it will tell you the keybinding for it
 (require 'package)
 
-;;add scripts directory to load path, so that .el files are automatically evaluated
-(add-to-list 'load-path "~/.emacs.d/scripts")
-(add-to-list 'load-path "~/.emacs.d/custom_elisp/")
+;;add scripts directory so that .el files are automatically evaluated
+(mapc 'load (file-expand-wildcards "~/.emacs.d/scripts/*.el"))
 
-;(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
+;;add custom file to load path
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/custom_elisp/") t)
+
+                                        ;(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t)
-;(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-;(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)
+                                        ;(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+                                        ;(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)
 
 (package-initialize)
 
@@ -77,6 +79,98 @@
   :ensure t)
 
 (use-package lsp-mode
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  :hook (
+         (csharp-mode . lsp)
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp
+  :config (progn
+            (use-package csharp-mode)
+            (use-package dap-mode)
+            (use-package which-key
+              :config
+              (which-key-mode))))
+
+(use-package projectile
+  :ensure t
+  :config
+  (progn (projectile-global-mode 1)
+         (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)))
+
+(use-package treemacs
+  :ensure t
+  :defer t
+  :init
+  (with-eval-after-load 'winum
+    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+  :config
+  (progn
+    (setq treemacs-collapse-dirs                 (if treemacs-python-executable 3 0)
+          treemacs-deferred-git-apply-delay      0.5
+          treemacs-directory-name-transformer    #'identity
+          treemacs-display-in-side-window        t
+          treemacs-eldoc-display                 t
+          treemacs-file-event-delay              5000
+          treemacs-file-extension-regex          treemacs-last-period-regex-value
+          treemacs-file-follow-delay             0.2
+          treemacs-file-name-transformer         #'identity
+          treemacs-follow-after-init             t
+          treemacs-git-command-pipe              ""
+          treemacs-goto-tag-strategy             'refetch-index
+          treemacs-indentation                   2
+          treemacs-indentation-string            " "
+          treemacs-is-never-other-window         nil
+          treemacs-max-git-entries               5000
+          treemacs-missing-project-action        'ask
+          treemacs-move-forward-on-expand        nil
+          treemacs-no-png-images                 nil
+          treemacs-no-delete-other-windows       t
+          treemacs-project-follow-cleanup        nil
+          treemacs-persist-file                  (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
+          treemacs-position                      'left
+          treemacs-read-string-input             'from-child-frame
+          treemacs-recenter-distance             0.1
+          treemacs-recenter-after-file-follow    nil
+          treemacs-recenter-after-tag-follow     nil
+          treemacs-recenter-after-project-jump   'always
+          treemacs-recenter-after-project-expand 'on-distance
+          treemacs-show-cursor                   nil
+          treemacs-show-hidden-files             t
+          treemacs-silent-filewatch              nil
+          treemacs-silent-refresh                nil
+          treemacs-sorting                       'alphabetic-asc
+          treemacs-space-between-root-nodes      t
+          treemacs-tag-follow-cleanup            t
+          treemacs-tag-follow-delay              1.5
+          treemacs-user-mode-line-format         nil
+          treemacs-user-header-line-format       nil
+          treemacs-width                         35
+          treemacs-workspace-switch-cleanup      nil)
+    ;; The default width and height of the icons is 22 pixels. If you are
+    ;; using a Hi-DPI display, uncomment this to double the icon size.
+    ;;(treemacs-resize-icons 44)
+
+    (treemacs-follow-mode t)
+    (treemacs-filewatch-mode t)
+    (treemacs-fringe-indicator-mode 'always)
+    (pcase (cons (not (null (executable-find "git")))
+                 (not (null treemacs-python-executable)))
+      (`(t . t)
+       (treemacs-git-mode 'deferred))
+      (`(t . _)
+       (treemacs-git-mode 'simple))))
+  :bind
+  (:map global-map
+        ("M-0"       . treemacs-select-window)
+        ("C-x t 1"   . treemacs-delete-other-windows)
+        ("C-x t t"   . treemacs)
+        ("C-x t B"   . treemacs-bookmark)
+        ("C-x t C-t" . treemacs-find-file)
+        ("C-x t M-t" . treemacs-find-tag)))
+
+(use-package treemacs-projectile
+  :after (treemacs projectile)
   :ensure t)
 
 (use-package fill-column-indicator
@@ -116,7 +210,7 @@
      '((emacs-lisp . t)))
     (require 'ox-md)
     (use-package htmlize 
-    :ensure t))
+      :ensure t))
   :bind
   ("C-c o l" . org-store-link)
   ("C-c o a" . org-agenda))
@@ -216,19 +310,19 @@
   ("M-i e" . dumb-jump-go-prefer-external)
   ("M-i w" . dumbp-jump-g-prefer-external-other-window))
 
-(use-package projectile
-  :ensure t
-  :config
-  (projectile-global-mode 1))
 
 (use-package ace-jump-mode
   :ensure t
   :diminish ace-jump-mode
   :bind ("C-c SPC" . ace-jump-mode))
 
-(use-package neotree
+(use-package ivy
   :ensure t
-  :bind ("C-c 8" . neotree-toggle))
+  :config
+  (progn (ivy-mode 1)
+         (setq ivy-use-virtual-buffers t)
+         (setq enable-recursive-minibuffers t)))
+                 
 
 (use-package undo-tree
   :diminish undo-tree-mode
@@ -243,37 +337,12 @@
   (setq inferior-lisp-program "/usr/bin/sbcl")
   (setq slime-contribs '(slime-fancy)))
 
+;;requires cmake
+(use-package vterm
+  :ensure t)
+
 ;;-------------------------------custom functions---------------------------------
 
-(defun switch-to-previous-buffer ()
-  (interactive)
-  (switch-to-buffer nil))
-
-;;; Define a default fullscreen and non full-screen mode, then add a function to toggle between the two
-(defun my-fullscreen ()
-  (interactive)
-  (set-frame-parameter nil 'fullscreen 'fullboth)       ;this makes the frame go fullscreen
-  (tool-bar-mode -1)                                    ;these 3 lines turn off GUI junk
-  (menu-bar-mode -1))
-
-(defun my-non-fullscreen ()
-  (interactive)
-  (set-frame-parameter nil 'width 82)
-  (set-frame-parameter nil 'fullscreen 'fullheight)
-  (menu-bar-mode t))                                    ;I don't turn tool-bar and scroll-bar back on b/c I never want them
-
-
-(defun toggle-fullscreen ()
-  (interactive)
-  (if (eq (frame-parameter nil 'fullscreen) 'fullboth)  ;tests if already fullscreened
-      (my-non-fullscreen)
-    (my-fullscreen)))
-
-;;copies the buffers current file path
-(defun filename ()
-  "Copy the full path of the current buffer."
-  (interactive)
-  (kill-new (buffer-file-name (window-buffer (minibuffer-selected-window)))))
 
 ;;---------------------------------keybindings------------------------------------
 (global-set-key (kbd "C-<delete>") 'switch-to-previous-buffer)
