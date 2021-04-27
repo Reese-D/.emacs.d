@@ -48,6 +48,8 @@
 ;;---------------------------------use package------------------------------------
 (use-package terraform-mode
   :ensure t)
+(use-package yaml-mode
+  :ensure t)
 (use-package clojure-mode
   :config (progn
             (use-package cider
