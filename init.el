@@ -1,6 +1,12 @@
 ;;useful tips
 ;;C-h k --type this then any other command, and it will tell you the name of the command assigned to that hotkey as well as a description
 ;;C-h w --reverse of C-h k, type in the name of any command and it will tell you the keybinding for it
+
+;;set a register
+;;C-x r SPC 
+;;jump back to that register
+;;C-x r j
+
 (require 'package)
 
 ;;add scripts directory so that .el files are automatically evaluated
@@ -46,10 +52,10 @@
  )
 
 ;;---------------------------------use package------------------------------------
-(use-package terraform-mode
-  :ensure t)
 (use-package yaml-mode
   :ensure t)
+(use-package terraform-mode
+  :ensure t)  
 (use-package clojure-mode
   :config (progn
             (use-package cider
@@ -79,6 +85,15 @@
   :ensure t)
 (use-package delight
   :ensure t)
+(use-package typescript-mode
+  :ensure t)
+(use-package tide
+  :ensure t
+  :after (typescript-mode company flycheck)
+  :hook ((typescript-mode . tide-setup)
+         (typescript-mode . tide-hl-identifier-mode)
+         (before-save . tide-format-before-save)))
+
 
 (use-package lsp-mode
   :init
@@ -261,12 +276,19 @@
   :init
   (use-package glsl-mode
     :ensure t)
-  (use-package web-mode
-    :ensure t)
-  :config (let ((glsl-stuff (mapcar (lambda (x) (cons x 'glsl-mode)) '("\\.glsl\\'" "\\.vert\\'" "\\.frag\\'" "\\.geom\\'")))
-                (web-stuff (mapcar (lambda (x) (cons x 'web-mode)) '("\\.phtml\\'" "\\.tpl\\.php\\'" "\\.[agj]sp\\'" "\\.as[cp]x\\'" "\\.erb\\'" "\\.mustache\\'"))))
-            (mapc (lambda (x) (add-to-list 'auto-mode-alist x)) glsl-stuff)))
+  :after (flycheck)
+  :config (progn
+            (let ((glsl-stuff (mapcar (lambda (x) (cons x 'glsl-mode)) '("\\.glsl\\'" "\\.vert\\'" "\\.frag\\'" "\\.geom\\'")))
+                  (web-stuff (mapcar (lambda (x) (cons x 'web-mode)) '("\\.tsx\\'" "\\.phtml\\'" "\\.tpl\\.php\\'" "\\.[agj]sp\\'" "\\.as[cp]x\\'" "\\.erb\\'" "\\.mustache\\'"))))
+              (mapc (lambda (x) (add-to-list 'auto-mode-alist x)) glsl-stuff)
+              (mapc (lambda (x) (add-to-list 'auto-mode-alist x)) web-stuff))
+              (when (string-equal "tsx" (file-name-extension buffer-file-name))
+                (setup-tide-mode))))
 
+(use-package flycheck
+  :ensure t
+  :config (flycheck-add-mode 'typescript-tslint 'web-mode))
+  
 (use-package multiple-cursors
   :ensure t
   :bind

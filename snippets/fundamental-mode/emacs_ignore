@@ -5,5 +5,8 @@
 #emacs_ignore
 *~
 \#*\#
-*.elc
+*\.el[c|d]
 .\#*
+
+# projectile files
+.projectile

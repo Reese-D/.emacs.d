@@ -1,10 +1,16 @@
+#emacs_ignore
 *~
+\#*\#
+*.el[c|d]
+.\#*
+.projectile
+
 auto-save-list/*
 elpa/*
-*.eld
-*#
 custom.el
 transient/*
+
+projectile.cache
 
 .cache/
 .lsp-session*
