@@ -21,3 +21,5 @@ elpy/*
 anaconda-mode/*
 session.*
 .mc-lists.el
+
+eln-cache

@@ -38,57 +38,49 @@
 (add-and-require-multiple
  'use-package ;can't include itself
 
- ;;use-package can't find these, so try other repos
- 'undo-tree
- 'smart-tabs-mode
+ ;; ;;use-package can't find these, so try other repos
+ ;; 'undo-tree
+ ;; 'smart-tabs-mode
 
- ;;Themes
- 'ample-theme
- 'monokai-theme
- 'gruvbox-theme
- 'zenburn-theme
- 'dracula-theme
- 'nord-theme
+ ;; ;;Themes
+ ;; 'ample-theme
+ ;; 'monokai-theme
+ ;; 'gruvbox-theme
+ ;; 'zenburn-theme
+ ;; 'dracula-theme
+ ;; 'nord-theme
  )
 
 ;;---------------------------------use package------------------------------------
-(use-package yaml-mode
-  :ensure t)
-(use-package terraform-mode
-  :ensure t)  
+(setq use-package-always-ensure t)
+(use-package undo-tree)
+(use-package smart-tabs-mode)
+(use-package ample-theme)
+(use-package monokai-theme)
+(use-package zenburn-theme)
+(use-package dracula-theme)
+(use-package nord-theme)
+(use-package yaml-mode)
+(use-package terraform-mode)  
 (use-package clojure-mode
   :config (progn
             (use-package cider
-              :ensure t)
+            )
             (use-package clojure-mode-extra-font-locking
-              :ensure t))
-  :ensure t)
-(use-package go-mode
-  :ensure t)
-(use-package fennel-mode
-  :ensure t)
-(use-package lua-mode
-  :ensure t)
-(use-package alchemist
-  :ensure t)
-(use-package diminish
-  :ensure t)
-(use-package haskell-mode
-  :ensure t)
-(use-package transpose-frame
-  :ensure t)
-(use-package inf-ruby   ;run ruby in emacs with M-x inf-ruby
-  :ensure t)
-(use-package magit-popup
-  :ensure t)
-(use-package magit
-  :ensure t)
-(use-package delight
-  :ensure t)
-(use-package typescript-mode
-  :ensure t)
+            )))
+(use-package go-mode)
+(use-package fennel-mode)
+(use-package lua-mode)
+(use-package alchemist)
+(use-package diminish)
+(use-package haskell-mode)
+(use-package transpose-frame)
+(use-package inf-ruby)   ;run ruby in emacs with M-x inf-ruby
+(use-package magit-popup)
+(use-package magit)
+(use-package delight)
+(use-package typescript-mode)
 (use-package tide
-  :ensure t
   :after (typescript-mode company flycheck)
   :hook ((typescript-mode . tide-setup)
          (typescript-mode . tide-hl-identifier-mode)
@@ -100,23 +92,22 @@
   (setq lsp-keymap-prefix "C-c l")
   :hook (
          (csharp-mode . lsp)
+         (c-mode . lsp)
+         (c++-mode . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp
   :config (progn
-            (use-package csharp-mode)
             (use-package dap-mode)
             (use-package which-key
               :config
               (which-key-mode))))
 
 (use-package projectile
-  :ensure t
   :config
   (progn (projectile-global-mode 1)
          (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)))
 
 (use-package treemacs
-  :ensure t
   :defer t
   :init
   (with-eval-after-load 'winum
@@ -188,7 +179,7 @@
 
 (use-package treemacs-projectile
   :after (treemacs projectile)
-  :ensure t)
+)
 
 (use-package fill-column-indicator
   :init
@@ -207,7 +198,6 @@
   :bind ("C-c 1" . redspace-mode))
 
 (use-package smart-tabs-mode
-  :ensure t
   :hook
   (common-lisp-mode . smart-tabs)
   :config
@@ -218,7 +208,6 @@
     (smart-tabs-advice python-indent-line-1 python-indent)))
 
 (use-package org
-  :ensure t
   :config
   (progn
     (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
@@ -227,14 +216,12 @@
      '((emacs-lisp . t)))
     (require 'ox-md)
     (use-package htmlize 
-      :ensure t))
+    ))
   :bind
   ("C-c o l" . org-store-link)
   ("C-c o a" . org-agenda))
 
 (use-package elpy
-  :ensure t
-  :ensure t
   :defer t
   :init
   (advice-add 'python-mode :before 'elpy-enable))
@@ -244,7 +231,6 @@
 ;; M-, pop back ref stack
 ;; M-. show doc
 (use-package anaconda-mode
-  :ensure t
   :init
   (defun anaconda-autocomplete-hook ()
     (local-set-key (kbd "C-<tab>") 'anaconda-mode-complete))
@@ -254,15 +240,14 @@
           (python-mode . anaconda-autocomplete-hook)))
 
 (use-package rainbow-delimiters
-  :ensure t
   :config (progn
             (defface my-outermost-paren-face
               '((t (:weight bold)))
               "Face used for outermost parens.")
             (use-package cl-lib
-              :ensure t)
+            )
             (use-package color
-              :ensure t)
+            )
             (show-paren-mode)
             (cl-loop
              for index from 1 to rainbow-delimiters-max-face-count
@@ -272,10 +257,9 @@
   :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package web-mode
-  :ensure t
   :init
   (use-package glsl-mode
-    :ensure t)
+  )
   :after (flycheck)
   :config (progn
             (let ((glsl-stuff (mapcar (lambda (x) (cons x 'glsl-mode)) '("\\.glsl\\'" "\\.vert\\'" "\\.frag\\'" "\\.geom\\'")))
@@ -286,11 +270,9 @@
                 (setup-tide-mode))))
 
 (use-package flycheck
-  :ensure t
   :config (flycheck-add-mode 'typescript-tslint 'web-mode))
   
 (use-package multiple-cursors
-  :ensure t
   :bind
   ("C-c s" . mc/edit-lines)
   ("C-c n" . mc/mark-next-like-this)
@@ -298,15 +280,13 @@
   ("C-c a" . mc/mark-more-like-this-extended))
 
 (use-package yasnippet
-  :ensure t
   :config
   (progn
     (yas-global-mode 1)
     (use-package yasnippet-snippets
-      :ensure t)))
+    )))
 
 (use-package company
-  :ensure t
   :diminish company-mode
   :hook (after-init . global-company-mode)
   :bind
@@ -324,7 +304,6 @@
   (company-tooltip-align-annotations t))
 
 (use-package dumb-jump
-  :ensure t
   :bind
   ("M-i" . nil);; Remove the old keybinding tab-to-tab-stop
   ("M-i i" . dumb-jump-go)
@@ -336,12 +315,10 @@
 
 
 (use-package ace-jump-mode
-  :ensure t
   :diminish ace-jump-mode
   :bind ("C-c SPC" . ace-jump-mode))
 
 (use-package ivy
-  :ensure t
   :config
   (progn (ivy-mode 1)
          (setq ivy-use-virtual-buffers t)
@@ -356,14 +333,12 @@
   (setq undo-tree-visualizer-diff t))
 
 (use-package slime
-  :ensure t
   :config
   (setq inferior-lisp-program "/usr/bin/sbcl")
   (setq slime-contribs '(slime-fancy)))
 
 ;;requires cmake
-(use-package vterm
-  :ensure t)
+(use-package vterm)
 
 ;;-------------------------------custom functions---------------------------------
 
