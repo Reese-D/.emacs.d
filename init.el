@@ -37,18 +37,6 @@
 
 (add-and-require-multiple
  'use-package ;can't include itself
-
- ;; ;;use-package can't find these, so try other repos
- ;; 'undo-tree
- ;; 'smart-tabs-mode
-
- ;; ;;Themes
- ;; 'ample-theme
- ;; 'monokai-theme
- ;; 'gruvbox-theme
- ;; 'zenburn-theme
- ;; 'dracula-theme
- ;; 'nord-theme
  )
 
 ;;---------------------------------use package------------------------------------
@@ -62,45 +50,45 @@
 (use-package nord-theme)
 (use-package yaml-mode)
 (use-package terraform-mode)  
-(use-package clojure-mode
-  :config (progn
-            (use-package cider
-            )
-            (use-package clojure-mode-extra-font-locking
-            )))
-(use-package go-mode)
-(use-package fennel-mode)
-(use-package lua-mode)
-(use-package alchemist)
-(use-package diminish)
-(use-package haskell-mode)
+;; (use-package clojure-mode
+;;   :config (progn
+;;             (use-package cider
+;;             )
+;;             (use-package clojure-mode-extra-font-locking
+;;             )))
+;; (use-package go-mode)
+;; (use-package fennel-mode)
+;; (use-package lua-mode)
+;; (use-package alchemist)
+;; (use-package diminish)
+;; (use-package haskell-mode)
 (use-package transpose-frame)
 (use-package inf-ruby)   ;run ruby in emacs with M-x inf-ruby
 (use-package magit-popup)
 (use-package magit)
 (use-package delight)
-(use-package typescript-mode)
-(use-package tide
-  :after (typescript-mode company flycheck)
-  :hook ((typescript-mode . tide-setup)
-         (typescript-mode . tide-hl-identifier-mode)
-         (before-save . tide-format-before-save)))
+;; (use-package typescript-mode)
+;; (use-package tide
+;;   :after (typescript-mode company flycheck)
+;;   :hook ((typescript-mode . tide-setup)
+;;          (typescript-mode . tide-hl-identifier-mode)
+;;          (before-save . tide-format-before-save)))
 
 
-(use-package lsp-mode
-  :init
-  (setq lsp-keymap-prefix "C-c l")
-  :hook (
-         (csharp-mode . lsp)
-         (c-mode . lsp)
-         (c++-mode . lsp)
-         (lsp-mode . lsp-enable-which-key-integration))
-  :commands lsp
-  :config (progn
-            (use-package dap-mode)
-            (use-package which-key
-              :config
-              (which-key-mode))))
+;; (use-package lsp-mode
+;;   :init
+;;   (setq lsp-keymap-prefix "C-c l")
+;;   :hook (
+;;          (csharp-mode . lsp)
+;;          (c-mode . lsp)
+;;          (c++-mode . lsp)
+;;          (lsp-mode . lsp-enable-which-key-integration))
+;;   :commands lsp
+;;   :config (progn
+;;             (use-package dap-mode)
+;;             (use-package which-key
+;;               :config
+;;               (which-key-mode))))
 
 (use-package projectile
   :config
@@ -185,14 +173,12 @@
   :init
   (define-globalized-minor-mode global-fci-mode fci-mode
     (lambda () (fci-mode 1)))
-  :hook
-  (python-mode . fci-mode)
   :bind ("C-c 2" . fci-mode)
   :config
   (progn
     (setq fci-rule-width 1)
     (setq fci-rule-color "darkblue")
-    (setq fci-rule-column 120)))
+    (setq fci-rule-column 70)))
 
 (use-package redspace-mode
   :bind ("C-c 1" . redspace-mode))
@@ -221,23 +207,23 @@
   ("C-c o l" . org-store-link)
   ("C-c o a" . org-agenda))
 
-(use-package elpy
-  :defer t
-  :init
-  (advice-add 'python-mode :before 'elpy-enable))
+;; (use-package elpy
+;;   :defer t
+;;   :init
+;;   (advice-add 'python-mode :before 'elpy-enable))
 
 ;; M-. find definitions
 ;; C-x 4 find definitions other window
 ;; M-, pop back ref stack
-;; M-. show doc
-(use-package anaconda-mode
-  :init
-  (defun anaconda-autocomplete-hook ()
-    (local-set-key (kbd "C-<tab>") 'anaconda-mode-complete))
-  :hook (progn
-          (python-mode . anaconda-mode)
-          (python-mode . anaconda-eldoc-mode)
-          (python-mode . anaconda-autocomplete-hook)))
+;; ;; M-. show doc
+;; (use-package anaconda-mode
+;;   :init
+;;   (defun anaconda-autocomplete-hook ()
+;;     (local-set-key (kbd "C-<tab>") 'anaconda-mode-complete))
+;;   :hook (progn
+;;           (python-mode . anaconda-mode)
+;;           (python-mode . anaconda-eldoc-mode)
+;;           (python-mode . anaconda-autocomplete-hook)))
 
 (use-package rainbow-delimiters
   :config (progn
@@ -256,21 +242,22 @@
                (cl-callf color-saturate-name (face-foreground face) 30))))
   :hook (prog-mode . rainbow-delimiters-mode))
 
-(use-package web-mode
-  :init
-  (use-package glsl-mode
-  )
-  :after (flycheck)
-  :config (progn
-            (let ((glsl-stuff (mapcar (lambda (x) (cons x 'glsl-mode)) '("\\.glsl\\'" "\\.vert\\'" "\\.frag\\'" "\\.geom\\'")))
-                  (web-stuff (mapcar (lambda (x) (cons x 'web-mode)) '("\\.tsx\\'" "\\.phtml\\'" "\\.tpl\\.php\\'" "\\.[agj]sp\\'" "\\.as[cp]x\\'" "\\.erb\\'" "\\.mustache\\'"))))
-              (mapc (lambda (x) (add-to-list 'auto-mode-alist x)) glsl-stuff)
-              (mapc (lambda (x) (add-to-list 'auto-mode-alist x)) web-stuff))
-              (when (string-equal "tsx" (file-name-extension buffer-file-name))
-                (setup-tide-mode))))
 
-(use-package flycheck
-  :config (flycheck-add-mode 'typescript-tslint 'web-mode))
+;; (use-package web-mode
+;;   :init
+;;   (use-package glsl-mode
+;;   )
+;;   :after (flycheck)
+;;   :config (progn
+;;             (let ((glsl-stuff (mapcar (lambda (x) (cons x 'glsl-mode)) '("\\.glsl\\'" "\\.vert\\'" "\\.frag\\'" "\\.geom\\'")))
+;;                   (web-stuff (mapcar (lambda (x) (cons x 'web-mode)) '("\\.tsx\\'" "\\.phtml\\'" "\\.tpl\\.php\\'" "\\.[agj]sp\\'" "\\.as[cp]x\\'" "\\.erb\\'" "\\.mustache\\'"))))
+;;               (mapc (lambda (x) (add-to-list 'auto-mode-alist x)) glsl-stuff)
+;;               (mapc (lambda (x) (add-to-list 'auto-mode-alist x)) web-stuff))
+;;               (when (string-equal "tsx" (file-name-extension buffer-file-name))
+;;                 (setup-tide-mode))))
+
+;; (use-package flycheck
+;;   :config (flycheck-add-mode 'typescript-tslint 'web-mode))
   
 (use-package multiple-cursors
   :bind
@@ -318,11 +305,11 @@
   :diminish ace-jump-mode
   :bind ("C-c SPC" . ace-jump-mode))
 
-(use-package ivy
-  :config
-  (progn (ivy-mode 1)
-         (setq ivy-use-virtual-buffers t)
-         (setq enable-recursive-minibuffers t)))
+;; (use-package ivy
+;;   :config
+;;   (progn (ivy-mode 1)
+;;          (setq ivy-use-virtual-buffers t)
+;;          (setq enable-recursive-minibuffers t)))
                  
 
 (use-package undo-tree
@@ -332,10 +319,10 @@
   (setq undo-tree-visualizer-timestamps t)
   (setq undo-tree-visualizer-diff t))
 
-(use-package slime
-  :config
-  (setq inferior-lisp-program "/usr/bin/sbcl")
-  (setq slime-contribs '(slime-fancy)))
+;; (use-package slime
+;;   :config
+;;   (setq inferior-lisp-program "/usr/bin/sbcl")
+;;   (setq slime-contribs '(slime-fancy)))
 
 ;;requires cmake
 (use-package vterm)
@@ -354,7 +341,7 @@
 ;; Different keybinds for macros
 (global-set-key (kbd "C-c r s") 'kmacro-start-macro-or-insert-counter)
 (global-set-key (kbd "C-c r e") 'kmacro-end-or-call-macro)
-
+(global-set-key (kbd "C-c C-c") 'comment-region)
 ;;---------------------------------Initialization---------------------------------
 
 (toggle-fullscreen)
@@ -390,3 +377,18 @@
 
 
 (enable-theme 'gruvbox-dark-hard) ;our chosen theme, pick whatever you like (my top picks are ample-flat, gruvbox-dark-hard, nord, and wombat)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
