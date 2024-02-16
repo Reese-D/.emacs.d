@@ -54,37 +54,36 @@
 ;;---------------------------------use package------------------------------------
 (setq use-package-always-ensure t)
 (use-package undo-tree)
-(use-package smart-tabs-mode)
 (use-package ample-theme)
 (use-package monokai-theme)
 (use-package zenburn-theme)
-(use-package dracula-theme)
+;;(use-package dracula-theme)
 (use-package nord-theme)
-(use-package yaml-mode)
-(use-package terraform-mode)  
-(use-package clojure-mode
-  :config (progn
-            (use-package cider
-            )
-            (use-package clojure-mode-extra-font-locking
-            )))
-(use-package go-mode)
-(use-package fennel-mode)
-(use-package lua-mode)
-(use-package alchemist)
+;;(use-package yaml-mode)
+;;(use-package terraform-mode)  
+;; (use-package clojure-mode
+;;   :config (progn
+;;             (use-package cider
+;;             )
+;;             (use-package clojure-mode-extra-font-locking
+;;             )))
+;; (use-package go-mode)
+;; (use-package fennel-mode)
+;; (use-package lua-mode)
+;;(use-package alchemist)
 (use-package diminish)
-(use-package haskell-mode)
+;;(use-package haskell-mode)
 (use-package transpose-frame)
-(use-package inf-ruby)   ;run ruby in emacs with M-x inf-ruby
+;;(use-package inf-ruby)   ;run ruby in emacs with M-x inf-ruby
 (use-package magit-popup)
 (use-package magit)
 (use-package delight)
-(use-package typescript-mode)
-(use-package tide
-  :after (typescript-mode company flycheck)
-  :hook ((typescript-mode . tide-setup)
-         (typescript-mode . tide-hl-identifier-mode)
-         (before-save . tide-format-before-save)))
+;;(use-package typescript-mode)
+;; (use-package tide
+;;   :after (typescript-mode company flycheck)
+;;   :hook ((typescript-mode . tide-setup)
+;;          (typescript-mode . tide-hl-identifier-mode)
+;;          (before-save . tide-format-before-save)))
 
 
 (use-package lsp-mode
@@ -197,15 +196,15 @@
 (use-package redspace-mode
   :bind ("C-c 1" . redspace-mode))
 
-(use-package smart-tabs-mode
-  :hook
-  (common-lisp-mode . smart-tabs)
-  :config
-  (progn
-    (setq-default indent-tabs-mode nil)
-    (smart-tabs-insinuate 'python)
-    (setq backward-delete-char-untabify-method nil)
-    (smart-tabs-advice python-indent-line-1 python-indent)))
+;; (use-package smart-tabs-mode
+;;   :hook
+;;   (common-lisp-mode . smart-tabs)
+;;   :config
+;;   (progn
+;;     (setq-default indent-tabs-mode nil)
+;;     (smart-tabs-insinuate 'python)
+;;     (setq backward-delete-char-untabify-method nil)
+;;     (smart-tabs-advice python-indent-line-1 python-indent)))
 
 (use-package org
   :config
@@ -239,35 +238,35 @@
           (python-mode . anaconda-eldoc-mode)
           (python-mode . anaconda-autocomplete-hook)))
 
-(use-package rainbow-delimiters
-  :config (progn
-            (defface my-outermost-paren-face
-              '((t (:weight bold)))
-              "Face used for outermost parens.")
-            (use-package cl-lib
-            )
-            (use-package color
-            )
-            (show-paren-mode)
-            (cl-loop
-             for index from 1 to rainbow-delimiters-max-face-count
-             do
-             (let ((face (intern (format "rainbow-delimiters-depth-%d-face" index))))
-               (cl-callf color-saturate-name (face-foreground face) 30))))
-  :hook (prog-mode . rainbow-delimiters-mode))
+;; (use-package rainbow-delimiters
+;;   :config (progn
+;;             (defface my-outermost-paren-face
+;;               '((t (:weight bold)))
+;;               "Face used for outermost parens.")
+;;             (use-package cl-lib
+;;             )
+;;             (use-package color
+;;             )
+;;             (show-paren-mode)
+;;             (cl-loop
+;;              for index from 1 to rainbow-delimiters-max-face-count
+;;              do
+;;              (let ((face (intern (format "rainbow-delimiters-depth-%d-face" index))))
+;;                (cl-callf color-saturate-name (face-foreground face) 30))))
+;;   :hook (prog-mode . rainbow-delimiters-mode))
 
-(use-package web-mode
-  :init
-  (use-package glsl-mode
-  )
-  :after (flycheck)
-  :config (progn
-            (let ((glsl-stuff (mapcar (lambda (x) (cons x 'glsl-mode)) '("\\.glsl\\'" "\\.vert\\'" "\\.frag\\'" "\\.geom\\'")))
-                  (web-stuff (mapcar (lambda (x) (cons x 'web-mode)) '("\\.tsx\\'" "\\.phtml\\'" "\\.tpl\\.php\\'" "\\.[agj]sp\\'" "\\.as[cp]x\\'" "\\.erb\\'" "\\.mustache\\'"))))
-              (mapc (lambda (x) (add-to-list 'auto-mode-alist x)) glsl-stuff)
-              (mapc (lambda (x) (add-to-list 'auto-mode-alist x)) web-stuff))
-              (when (string-equal "tsx" (file-name-extension buffer-file-name))
-                (setup-tide-mode))))
+;; (use-package web-mode
+;;   :init
+;;   (use-package glsl-mode
+;;   )
+;;   :after (flycheck)
+;;   :config (progn
+;;             (let ((glsl-stuff (mapcar (lambda (x) (cons x 'glsl-mode)) '("\\.glsl\\'" "\\.vert\\'" "\\.frag\\'" "\\.geom\\'")))
+;;                   (web-stuff (mapcar (lambda (x) (cons x 'web-mode)) '("\\.tsx\\'" "\\.phtml\\'" "\\.tpl\\.php\\'" "\\.[agj]sp\\'" "\\.as[cp]x\\'" "\\.erb\\'" "\\.mustache\\'"))))
+;;               (mapc (lambda (x) (add-to-list 'auto-mode-alist x)) glsl-stuff)
+;;               (mapc (lambda (x) (add-to-list 'auto-mode-alist x)) web-stuff))
+;;               (when (string-equal "tsx" (file-name-extension buffer-file-name))
+;;                 (setup-tide-mode))))
 
 (use-package flycheck
   :config (flycheck-add-mode 'typescript-tslint 'web-mode))
@@ -338,7 +337,7 @@
   (setq slime-contribs '(slime-fancy)))
 
 ;;requires cmake
-(use-package vterm)
+;;(use-package vterm)
 
 ;;-------------------------------custom functions---------------------------------
 
