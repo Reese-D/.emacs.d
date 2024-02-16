@@ -1,3 +1,4 @@
+
 ;;useful tips
 ;;C-h k --type this then any other command, and it will tell you the name of the command assigned to that hotkey as well as a description
 ;;C-h w --reverse of C-h k, type in the name of any command and it will tell you the keybinding for it
@@ -14,6 +15,7 @@
 
 ;;add custom file to load path
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/custom_elisp/") t)
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/init/") t)
 
                                         ;(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
@@ -37,22 +39,11 @@
 
 (add-and-require-multiple
  'use-package ;can't include itself
-
- ;; ;;use-package can't find these, so try other repos
- ;; 'undo-tree
- ;; 'smart-tabs-mode
-
- ;; ;;Themes
- ;; 'ample-theme
- ;; 'monokai-theme
- ;; 'gruvbox-theme
- ;; 'zenburn-theme
- ;; 'dracula-theme
- ;; 'nord-theme
  )
 
 ;;---------------------------------use package------------------------------------
 (setq use-package-always-ensure t)
+
 (use-package undo-tree)
 (use-package smart-tabs-mode)
 (use-package ample-theme)
@@ -60,38 +51,33 @@
 (use-package zenburn-theme)
 (use-package dracula-theme)
 (use-package nord-theme)
-(use-package yaml-mode)
-(use-package terraform-mode)  
-(use-package clojure-mode
-  :config (progn
-            (use-package cider
-            )
-            (use-package clojure-mode-extra-font-locking
-            )))
-(use-package go-mode)
-(use-package fennel-mode)
-(use-package lua-mode)
-(use-package alchemist)
 (use-package diminish)
-(use-package haskell-mode)
 (use-package transpose-frame)
-(use-package inf-ruby)   ;run ruby in emacs with M-x inf-ruby
 (use-package magit-popup)
 (use-package magit)
-(use-package delight)
-(use-package typescript-mode)
-(use-package tide
-  :after (typescript-mode company flycheck)
-  :hook ((typescript-mode . tide-setup)
-         (typescript-mode . tide-hl-identifier-mode)
-         (before-save . tide-format-before-save)))
 
-
+(use-package org-roam
+  :ensure t
+  :custom
+  (org-roam-directory (file-truename "~/org/"))
+  :bind (("C-c r f" . org-roam-node-find)
+         ("C-c r r" . org-roam-node-random)
+         ;; Dailies
+         ("C-c r j" . org-roam-dailies-capture-today)
+         (:map org-mode-map
+               (("C-c r i" . org-roam-node-insert)
+                ("C-c r o" . org-id-get-create)
+                ("C-c r t" . org-roam-tag-add)
+                ("C-c r a" . org-roam-alias-add)
+                ("C-c r g" . org-roam-graph)
+                ("C-c r c" . org-roam-capture)
+                ("C-c r l" . org-roam-buffer-toggle))))
+  :config (org-roam-setup))
+  
 (use-package lsp-mode
   :init
   (setq lsp-keymap-prefix "C-c l")
   :hook (
-         (csharp-mode . lsp)
          (c-mode . lsp)
          (c++-mode . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
@@ -194,9 +180,6 @@
     (setq fci-rule-color "darkblue")
     (setq fci-rule-column 120)))
 
-(use-package redspace-mode
-  :bind ("C-c 1" . redspace-mode))
-
 (use-package smart-tabs-mode
   :hook
   (common-lisp-mode . smart-tabs)
@@ -220,24 +203,6 @@
   :bind
   ("C-c o l" . org-store-link)
   ("C-c o a" . org-agenda))
-
-(use-package elpy
-  :defer t
-  :init
-  (advice-add 'python-mode :before 'elpy-enable))
-
-;; M-. find definitions
-;; C-x 4 find definitions other window
-;; M-, pop back ref stack
-;; M-. show doc
-(use-package anaconda-mode
-  :init
-  (defun anaconda-autocomplete-hook ()
-    (local-set-key (kbd "C-<tab>") 'anaconda-mode-complete))
-  :hook (progn
-          (python-mode . anaconda-mode)
-          (python-mode . anaconda-eldoc-mode)
-          (python-mode . anaconda-autocomplete-hook)))
 
 (use-package rainbow-delimiters
   :config (progn
@@ -265,9 +230,7 @@
             (let ((glsl-stuff (mapcar (lambda (x) (cons x 'glsl-mode)) '("\\.glsl\\'" "\\.vert\\'" "\\.frag\\'" "\\.geom\\'")))
                   (web-stuff (mapcar (lambda (x) (cons x 'web-mode)) '("\\.tsx\\'" "\\.phtml\\'" "\\.tpl\\.php\\'" "\\.[agj]sp\\'" "\\.as[cp]x\\'" "\\.erb\\'" "\\.mustache\\'"))))
               (mapc (lambda (x) (add-to-list 'auto-mode-alist x)) glsl-stuff)
-              (mapc (lambda (x) (add-to-list 'auto-mode-alist x)) web-stuff))
-              (when (string-equal "tsx" (file-name-extension buffer-file-name))
-                (setup-tide-mode))))
+              (mapc (lambda (x) (add-to-list 'auto-mode-alist x)) web-stuff))))
 
 (use-package flycheck
   :config (flycheck-add-mode 'typescript-tslint 'web-mode))
@@ -338,7 +301,7 @@
   (setq slime-contribs '(slime-fancy)))
 
 ;;requires cmake
-(use-package vterm)
+;;(use-package vterm)
 
 ;;-------------------------------custom functions---------------------------------
 
@@ -378,15 +341,15 @@
 
 ;;---------------------------------Custom  Themes---------------------------------
 (load-theme 'wombat t)          ;neutral dark color scheme
-(load-theme 'tsdh-dark t)       ;another default emacs dark color scheme
-(load-theme 'monokai t)
-(load-theme 'ample t t)         ;these are all pretty nice, each gets a little lighter
-(load-theme 'ample-flat t t)
-(load-theme 'ample-light t t)   ;tan background
-(load-theme 'gruvbox t)
-(load-theme 'gruvbox-dark-hard t)
+;; (load-theme 'tsdh-dark t)       ;another default emacs dark color scheme
+;; (load-theme 'monokai t)
+;; (load-theme 'ample t t)         ;these are all pretty nice, each gets a little lighter
+;; (load-theme 'ample-flat t t)
+;; (load-theme 'ample-light t t)   ;tan background
+;; (load-theme 'gruvbox-dark-hard t)
 ;;;(load-theme 'dracula t)
-(load-theme 'nord t)
+;; (load-theme 'nord t)
 
 
-(enable-theme 'gruvbox-dark-hard) ;our chosen theme, pick whatever you like (my top picks are ample-flat, gruvbox-dark-hard, nord, and wombat)
+(enable-theme 'wombat) ;our chosen theme, pick whatever you like (my top picks are ample-flat, gruvbox-dark-hard, nord, and wombat)
+(put 'scroll-left 'disabled nil)
