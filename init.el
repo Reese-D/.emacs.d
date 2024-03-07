@@ -88,6 +88,13 @@
               :config
               (which-key-mode))))
 
+(setq gc-cons-threshold (* 100 1024 1024)
+      read-process-output-max (* 1024 1024)
+      treemacs-space-between-root-nodes nil
+      company-idle-delay 0.0
+      company-minimum-prefix-length 1
+      lsp-idle-delay 0.1)  ;; clangd is fast
+
 (use-package projectile
   :config
   (progn (projectile-global-mode 1)
@@ -163,6 +170,13 @@
         ("C-x t C-t" . treemacs-find-file)
         ("C-x t M-t" . treemacs-find-tag)))
 
+(use-package lsp-treemacs
+  :after (treemacs))
+(use-package helm-lsp)
+(use-package hydra)
+(use-package avy)
+(use-package helm-xref)
+            
 (use-package treemacs-projectile
   :after (treemacs projectile)
 )
@@ -232,8 +246,8 @@
               (mapc (lambda (x) (add-to-list 'auto-mode-alist x)) glsl-stuff)
               (mapc (lambda (x) (add-to-list 'auto-mode-alist x)) web-stuff))))
 
-(use-package flycheck
-  :config (flycheck-add-mode 'typescript-tslint 'web-mode))
+(use-package flycheck)
+  
   
 (use-package multiple-cursors
   :bind
