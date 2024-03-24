@@ -78,8 +78,7 @@
   :init
   (setq lsp-keymap-prefix "C-c l")
   :hook (
-         (c-mode . lsp)
-         (c++-mode . lsp)
+         (java-mode .lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp
   :config (progn
@@ -87,6 +86,11 @@
             (use-package which-key
               :config
               (which-key-mode))))
+
+(use-package lsp-java
+  :after lsp-mode
+  :ensure t)
+
 
 (setq gc-cons-threshold (* 100 1024 1024)
       read-process-output-max (* 1024 1024)
@@ -234,17 +238,6 @@
              (let ((face (intern (format "rainbow-delimiters-depth-%d-face" index))))
                (cl-callf color-saturate-name (face-foreground face) 30))))
   :hook (prog-mode . rainbow-delimiters-mode))
-
-(use-package web-mode
-  :init
-  (use-package glsl-mode
-  )
-  :after (flycheck)
-  :config (progn
-            (let ((glsl-stuff (mapcar (lambda (x) (cons x 'glsl-mode)) '("\\.glsl\\'" "\\.vert\\'" "\\.frag\\'" "\\.geom\\'")))
-                  (web-stuff (mapcar (lambda (x) (cons x 'web-mode)) '("\\.tsx\\'" "\\.phtml\\'" "\\.tpl\\.php\\'" "\\.[agj]sp\\'" "\\.as[cp]x\\'" "\\.erb\\'" "\\.mustache\\'"))))
-              (mapc (lambda (x) (add-to-list 'auto-mode-alist x)) glsl-stuff)
-              (mapc (lambda (x) (add-to-list 'auto-mode-alist x)) web-stuff))))
 
 (use-package flycheck)
   

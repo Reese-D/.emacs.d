@@ -23,3 +23,7 @@ session.*
 .mc-lists.el
 
 eln-cache
+
+tree-sitter
+workspace
+eclipse.jdt.ls
