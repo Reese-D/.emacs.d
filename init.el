@@ -84,7 +84,11 @@
 ;;   :hook ((typescript-mode . tide-setup)
 ;;          (typescript-mode . tide-hl-identifier-mode)
 ;;          (before-save . tide-format-before-save)))
+(use-package rust-mode)
+;;  :init
+;;  (setq rust-mode-treesitter-derive t))
 
+(use-package rustic)
 
 (use-package lsp-mode
   :init
@@ -93,6 +97,7 @@
          (csharp-mode . lsp)
          (c-mode . lsp)
          (c++-mode . lsp)
+	 (rust-mode . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp
   :config (progn
@@ -100,6 +105,28 @@
             (use-package which-key
               :config
               (which-key-mode))))
+
+(use-package lsp-ui
+  :commands lsp-ui-mode
+  :bind
+  (:map global-map
+	("C-c l s" . lsp-ui-sideline-toggle-symbols-info)
+	;;("C-c l d" . lsp-ui-doc-toggle)
+	("C-c l i" . lsp-ui-peek-find-implementations)
+	("C-c l d" . lsp-ui-peek-find-definitions)
+	("C-c l o" . lsp-ui-doc-glance)
+	("C-c l m" . lsp-ui-imenu)))
+
+(use-package lsp-treemacs
+  :after (treemacs)
+  :bind
+  (:map global-map
+        ("C-x t s" . lsp-treemacs-symbols)
+        ("C-x t e" . lsp-treemacs-errors-list)
+        ("C-x t r" . lsp-treemacs-references)
+        ("C-x t i" . lsp-treemacs-implementations)
+        ("C-x t h" . lsp-treemacs-type-hierarchy)
+        ("C-x t l" . lsp-treemacs-deps-list)))
 
 (use-package projectile
   :config
@@ -377,15 +404,15 @@
 
 ;;---------------------------------Custom  Themes---------------------------------
 (load-theme 'wombat t)          ;neutral dark color scheme
-(load-theme 'tsdh-dark t)       ;another default emacs dark color scheme
-(load-theme 'monokai t)
-(load-theme 'ample t t)         ;these are all pretty nice, each gets a little lighter
-(load-theme 'ample-flat t t)
-(load-theme 'ample-light t t)   ;tan background
-(load-theme 'gruvbox t)
-(load-theme 'gruvbox-dark-hard t)
+;(load-theme 'tsdh-dark t)       ;another default emacs dark color scheme
+;(load-theme 'monokai t)
+;(load-theme 'ample t t)         ;these are all pretty nice, each gets a little lighter
+;(load-theme 'ample-flat t t)
+;(load-theme 'ample-light t t)   ;tan background
+;(load-theme 'gruvbox t)
+;(load-theme 'gruvbox-dark-hard t)
 ;;;(load-theme 'dracula t)
-(load-theme 'nord t)
+;(load-theme 'nord t)
 
 
-(enable-theme 'gruvbox-dark-hard) ;our chosen theme, pick whatever you like (my top picks are ample-flat, gruvbox-dark-hard, nord, and wombat)
+(enable-theme 'wombat) ;our chosen theme, pick whatever you like (my top picks are ample-flat, gruvbox-dark-hard, nord, and wombat)
