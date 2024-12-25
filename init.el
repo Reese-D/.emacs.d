@@ -1,3 +1,54 @@
+;;if this file doesn't load, check to make sure you don't have a .emacs file somewhere or a different init file running  "C-h v user-init-file"
+
+;;to see compile options check the "system-configuration-options" value with "C-h v"
+
+;;some common compile options I use
+;;--without-sound --without-imagemagick --with-rsvg --with-threads --with-x-toolkit=no --with-native-compilation --with-tree-sitter --with-ns 'CFLAGS= -pipe -O3 -march=native -fomit-frame-pointer -fno-semantic-interposition -L/opt/homebrew/lib/gcc/14 -I/opt/homebrew/include -Wl,-rpath,/opt/homebrew/lib/gcc/14' LDFLAGS="-Wl,-O1" 
+
+(defvar elpaca-installer-version 0.8)
+(defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
+(defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
+(defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
+(defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
+                              :ref nil :depth 1
+                              :files (:defaults "elpaca-test.el" (:exclude "extensions"))
+                              :build (:not elpaca--activate-package)))
+(let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
+       (build (expand-file-name "elpaca/" elpaca-builds-directory))
+       (order (cdr elpaca-order))
+       (default-directory repo))
+  (add-to-list 'load-path (if (file-exists-p build) build repo))
+  (unless (file-exists-p repo)
+    (make-directory repo t)
+    (when (< emacs-major-version 28) (require 'subr-x))
+    (condition-case-unless-debug err
+        (if-let* ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
+                  ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
+                                                  ,@(when-let* ((depth (plist-get order :depth)))
+                                                      (list (format "--depth=%d" depth) "--no-single-branch"))
+                                                  ,(plist-get order :repo) ,repo))))
+                  ((zerop (call-process "git" nil buffer t "checkout"
+                                        (or (plist-get order :ref) "--"))))
+                  (emacs (concat invocation-directory invocation-name))
+                  ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
+                                        "--eval" "(byte-recompile-directory \".\" 0 'force)")))
+                  ((require 'elpaca))
+                  ((elpaca-generate-autoloads "elpaca" repo)))
+            (progn (message "%s" (buffer-string)) (kill-buffer buffer))
+          (error "%s" (with-current-buffer buffer (buffer-string))))
+      ((error) (warn "%s" err) (delete-directory repo 'recursive))))
+  (unless (require 'elpaca-autoloads nil t)
+    (require 'elpaca)
+    (elpaca-generate-autoloads "elpaca" repo)
+    (load "./elpaca-autoloads")))
+(add-hook 'after-init-hook #'elpaca-process-queues)
+(elpaca `(,@elpaca-order))
+
+;; Install use-package support
+(elpaca elpaca-use-package
+  ;; Enable use-package :ensure support for Elpaca.
+  (elpaca-use-package-mode))
+
 (defun efs/display-startup-time ()
   (message " Emacs loaded in %s with %d garbage collections."
 	   (format "%.2f seconds"
@@ -36,7 +87,7 @@
 
 (use-package delsel
   :ensure nil
-  :hook (after-init . delete-selection-mode))
+  :hook (elpaca-after-init . delete-selection-mode))
 
 (defun prot/keyboard-quit-dwim ()
   "Do-What-I-Mean behaviour for a general `keyboard-quit'.
@@ -66,36 +117,31 @@ The DWIM behaviour of this command is as follows:
 
 ;;; Tweak the looks of Emacs
 
-;; Those three belong in the early-init.el, but I am putting them here
-;; for convenience.  If the early-init.el exists in the same directory
-;; as the init.el, then Emacs will read+evaluate it before moving to
-;; the init.el.
 (menu-bar-mode 1)
 (scroll-bar-mode 1)
 (tool-bar-mode -1)
+(setq inhibit-startup-screen t)
+
 
 (let ((mono-spaced-font "Monospace")
       (proportionately-spaced-font "Sans"))
-  (set-face-attribute 'default nil :family mono-spaced-font :height 100)
+  (set-face-attribute 'default nil :family mono-spaced-font :height 110)
   (set-face-attribute 'fixed-pitch nil :family mono-spaced-font :height 1.0)
   (set-face-attribute 'variable-pitch nil :family proportionately-spaced-font :height 1.0))
 
+(use-package modus-themes
+  :ensure t
+  :config (load-theme 'modus-vivendi-tinted :no-confirm t)
+  (enable-theme 'modus-vivendi-tinted))
 
-;;use-package for modus-themes was roughly 0.7 seconds load up time on my mac mini m4
-;;so instead try to just load the theme, if that works (we've run the use-package at least once before) just enable the theme to avoid that overhead
-(if (load-theme 'modus-vivendi-tinted :no-confirm t)
-    (enable-theme 'modus-vivendi-tinted)
-  (use-package modus-themes
-    :ensure t
-    :config-theme 'modus-vivendi-tinted :no-confirm-loading))
 
 (use-package hydra
-  :ensure t)
+  :ensure t
+  :config (defhydra hydra-zoom (global-map "<f2>")
+		    "zoom"
+		    ("g" text-scale-increase "in")
+		    ("l" text-scale-decrease "out")))
 
-(defhydra hydra-zoom (global-map "<f2>")
-  "zoom"
-  ("g" text-scale-increase "in")
-  ("l" text-scale-decrease "out"))
 
 ;; Remember to do M-x and run `nerd-icons-install-fonts' to get the
 ;; font files.  Then restart Emacs to see the effect.
@@ -123,11 +169,11 @@ The DWIM behaviour of this command is as follows:
 
 (use-package vertico
   :ensure t
-  :hook (after-init . vertico-mode))
+  :hook (elpaca-after-init . vertico-mode))
 
 (use-package marginalia
   :ensure t
-  :hook (after-init . marginalia-mode))
+  :hook (elpaca-after-init . marginalia-mode))
 
 (use-package orderless
   :ensure t
@@ -138,11 +184,11 @@ The DWIM behaviour of this command is as follows:
 
 (use-package savehist
   :ensure nil ; it is built-in
-  :hook (after-init . savehist-mode))
+  :hook (elpaca-after-init . savehist-mode))
 
 (use-package corfu
   :ensure t
-  :hook (after-init . global-corfu-mode)
+  :hook (elpaca-after-init . global-corfu-mode)
   :bind (:map corfu-map ("<tab>" . corfu-complete))
   :config
   (setq tab-always-indent 'complete)
@@ -158,7 +204,6 @@ The DWIM behaviour of this command is as follows:
     (add-to-list 'savehist-additional-variables 'corfu-history)))
 
 ;;; The file manager (Dired)
-
 (use-package dired
   :ensure nil
   :commands (dired)
@@ -195,10 +240,12 @@ The DWIM behaviour of this command is as follows:
 ;---------------------------------------------------------------------
 
 ;;interactive lisp programming
-(use-package slime
+(use-package sly
   :ensure t
-  :config (setq inferior-lisp-program "sbcl")
-  :commands slime)
+  :defer t
+  :config
+  (setq inferior-lisp-program "/opt/homebrew/bin/sbcl"))
+
 
 ;;hell yea
 (use-package undo-tree
@@ -247,11 +294,11 @@ The DWIM behaviour of this command is as follows:
 ;;snippets
 (use-package yasnippet
   :ensure t
+  :defer t
   :config
   (progn
     (yas-global-mode 1)
-    (use-package yasnippet-snippets
-      )))
+    (use-package yasnippet-snippets)))
 
 ;;navigate quickly to text on screen by searching head character
 (use-package ace-jump-mode
@@ -270,11 +317,6 @@ The DWIM behaviour of this command is as follows:
     :config (beacon-mode 1)
     )
 
-;;qlot common lisp package manager and slime for repl
-(setq slime-lisp-implementations
-      '((sbcl ("sbcl") :coding-system utf-8-unix)
-        (qlot ("qlot" "exec" "sbcl") :coding-system utf-8-unix)))
-
 (use-package org-roam
   :ensure t
   :init (setq org-roam-v2-ack t)
@@ -282,19 +324,17 @@ The DWIM behaviour of this command is as follows:
   :bind (("C-c n l" . org-roam-buffer-toggle)
 	 ("C-c n f" . org-roam-node-find)
 	 ("C-c n i" . org-roam-node-insert)
-	 ("C-c n a" . org-roam-alias-add)))
-
-(org-roam-db-autosync-mode)
-
-(setq org-roam-node-display-template
-      (concat "${title:*} "
-	      (propertize "${tags:20}" 'face 'org-tag)))
+	 ("C-c n a" . org-roam-alias-add))
+  :config (org-roam-db-autosync-mode)
+  (setq org-roam-node-display-template
+	(concat "${title:*} "
+		(propertize "${tags:20}" 'face 'org-tag))))
 
 
 ;;roswell helper
-(load (expand-file-name "~/.roswell/helper.el"))
+;(load (expand-file-name "~/.roswell/helper.el"))
 
-(server-start)
+;;(server-start)
 ;;things to add once comfortable
 					;1) projectile/dired
 					;2) tab bar mode
