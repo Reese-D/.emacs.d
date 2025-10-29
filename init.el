@@ -5,6 +5,9 @@
 ;;some common compile options I use
 ;;--without-sound --without-imagemagick --with-rsvg --with-threads --with-x-toolkit=no --with-native-compilation --with-tree-sitter --with-ns 'CFLAGS= -pipe -O3 -march=native -fomit-frame-pointer -fno-semantic-interposition -L/opt/homebrew/lib/gcc/14 -I/opt/homebrew/include -Wl,-rpath,/opt/homebrew/lib/gcc/14' LDFLAGS="-Wl,-O1" 
 
+(setq auto-save-file-name-transforms
+          `((".*" ,(concat user-emacs-directory "auto-save/") t))) 
+
 (defvar elpaca-installer-version 0.8)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
@@ -60,7 +63,6 @@
 
 ;;M-x use-package-report -> shows how fast packages loaded up
 (setq use-package-compute-statistics t)
-
 
 (setq custom-file (locate-user-emacs-file "custom.el"))
 (load custom-file :no-error-if-file-is-missing)
@@ -385,3 +387,52 @@ The DWIM behaviour of this command is as follows:
 (use-package html-ts-mode
   :ensure nil ;;should be built in, will blow up with t
   :mode "\\.html\\'")
+
+(keymap-global-set "§" "`")
+(keymap-global-set "±" "~")
+
+
+;;Make sure to install Leiningen if using lein projects, then open with cider-jack-in
+(use-package clojure-mode
+  :ensure t)
+(use-package cider
+  :ensure t)
+
+(use-package rust-mode
+  :ensure t)
+(use-package rustic
+  :ensure t)
+
+
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode
+  :custom
+  (lsp-ui-peek-always-show t)
+  (lsp-ui-sideline-show-hover t))
+
+(use-package lsp-mode
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  :hook (
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp
+  :config
+  (which-key-mode)
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+
+(use-package projectile
+  :ensure t)
+(use-package dap-mode
+  :ensure t
+  :config  (add-hook 'rustic-mode-hook (lambda ()
+					 (dap-register-debug-template "Rust LLDB Debug Configuration"
+								      (list :type "cppdbg"
+									    :request "launch"
+									    :name "Rust::Run"
+									    :MIMode "lldb"
+									    :gdbpath "rust-lldb"
+									    :program (concat (projectile-project-root) "target/debug/" (projectile-project-name)) ;; Requires that the rust project is a project in projectile
+									    :environment []
+									    :targetarchitecture "arm" ;;Only if you actually use ARM processor, such as on MacOS
+									    :cwd (projectile-project-root))))))

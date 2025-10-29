@@ -1,0 +1,23 @@
+#emacs_ignore
+*~
+\#*\#
+*\.el[c|d]
+.\#*
+
+# projectile files
+.projectile
+
+.lsp-session-v1
+.org-id-locations
+abbrev_defs
+auto-save-list/
+bookmarks
+custom.el
+eln-cache/
+elpa/
+elpaca/
+history
+quicklisp.lisp
+tramp
+transient/
+tree-sitter/
