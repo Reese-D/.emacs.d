@@ -1,0 +1,13 @@
+//The split tar file can be used on systems that cannot connect to elpa/melpa (some locked down laptops, etc)
+
+//Commands to create split tar file:
+tar -zcvf elpaca.tar.gz elpaca/
+split -d -b 90m elpaca.tar.gz elpaca.tar.gz
+
+//Commands to un-tar and un-split back into a elpaca folder:
+cat elpaca.tar.gz0* > elpaca.tar.gz
+tar -xvzf elpaca.tar.gz
+
+//NOTE: Make sure to remove the symlinking (see init.el file, there's a commented line about this). If it's commented out, you may have to delete your elpaca directory, run emacs to generate it again, and then tar and split the archive.
+
+//If the above is done correctly without sym-linking it should allow it to be used on windows systems as well
