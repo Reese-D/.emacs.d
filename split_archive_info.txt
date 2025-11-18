@@ -2,7 +2,7 @@
 
 //Commands to create split tar file:
 tar -zcvf elpaca.tar.gz elpaca/
-split -d -b 90m elpaca.tar.gz elpaca.tar.gz
+split -d -b 40m elpaca.tar.gz elpaca.tar.gz
 
 //Commands to un-tar and un-split back into a elpaca folder:
 cat elpaca.tar.gz0* > elpaca.tar.gz
