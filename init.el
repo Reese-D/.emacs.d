@@ -126,12 +126,17 @@ The DWIM behaviour of this command is as follows:
 (tool-bar-mode -1)
 (setq inhibit-startup-screen t)
 
-
 (let ((mono-spaced-font "Monospace")
       (proportionately-spaced-font "Sans"))
   (set-face-attribute 'default nil :family mono-spaced-font :height 110)
   (set-face-attribute 'fixed-pitch nil :family mono-spaced-font :height 1.0)
   (set-face-attribute 'variable-pitch nil :family proportionately-spaced-font :height 1.0))
+
+;;Currently emacs 30.1 and 30.2 bake in an old version of transient, too old for magit/elpaca
+;;this should force elpaca to download a newer version
+(use-package transient
+  :ensure t
+  )
 
 (use-package modus-themes
   :ensure t
@@ -150,7 +155,8 @@ The DWIM behaviour of this command is as follows:
 ;; Remember to do M-x and run `nerd-icons-install-fonts' to get the
 ;; font files.  Then restart Emacs to see the effect.
 (use-package nerd-icons
-  :ensure t)
+  :ensure t
+  )
 
 (use-package nerd-icons-completion
   :ensure t
@@ -160,6 +166,7 @@ The DWIM behaviour of this command is as follows:
 
 (use-package nerd-icons-corfu
   :ensure t
+  
   :after corfu
   :config
   (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
@@ -246,7 +253,6 @@ The DWIM behaviour of this command is as follows:
 ;;interactive lisp programming
 (use-package sly
   :ensure t
-  :defer t
   :config
   (setq inferior-lisp-program "/opt/homebrew/bin/sbcl"))
 
@@ -298,7 +304,6 @@ The DWIM behaviour of this command is as follows:
 ;;snippets
 (use-package yasnippet
   :ensure t
-  :defer t
   :config
   (progn
     (yas-global-mode 1)
@@ -313,11 +318,11 @@ The DWIM behaviour of this command is as follows:
 ;;git integration
 (use-package magit
   :ensure t
-  :defer t)
+  )
 
 ;;flash where the cursor is when the screen moves
 (use-package beacon
-    :ensure t
+  :ensure t
     :config (beacon-mode 1)
     )
 
@@ -396,14 +401,17 @@ The DWIM behaviour of this command is as follows:
 
 ;;Make sure to install Leiningen if using lein projects, then open with cider-jack-in
 (use-package clojure-mode
-  :ensure t)
-(use-package cider
-  :ensure t)
+  :ensure t
+  )
+;; (use-package cider
+;;   :ensure t)
 
 (use-package rust-mode
-  :ensure t)
+  :ensure t
+  )
 (use-package rustic
-  :ensure t)
+  :ensure t
+  )
 
 
 (use-package lsp-ui
@@ -424,7 +432,8 @@ The DWIM behaviour of this command is as follows:
   (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
 (use-package projectile
-  :ensure t)
+  :ensure t
+  )
 (use-package dap-mode
   :ensure t
   :config  (add-hook 'rustic-mode-hook (lambda ()
