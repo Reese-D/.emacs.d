@@ -6,7 +6,7 @@
 ;;--without-sound --without-imagemagick --with-rsvg --with-threads --with-x-toolkit=no --with-native-compilation --with-tree-sitter --with-ns 'CFLAGS= -pipe -O3 -march=native -fomit-frame-pointer -fno-semantic-interposition -L/opt/homebrew/lib/gcc/14 -I/opt/homebrew/include -Wl,-rpath,/opt/homebrew/lib/gcc/14' LDFLAGS="-Wl,-O1" 
 
 (setq auto-save-file-name-transforms
-          `((".*" ,(concat user-emacs-directory "auto-save/") t))) 
+      `((".*" ,(concat user-emacs-directory "auto-save/") t))) 
 
 (defvar elpaca-installer-version 0.11)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
@@ -147,9 +147,9 @@ The DWIM behaviour of this command is as follows:
 (use-package hydra
   :ensure t
   :config (defhydra hydra-zoom (global-map "<f2>")
-		    "zoom"
-		    ("g" text-scale-increase "in")
-		    ("l" text-scale-decrease "out")))
+	    "zoom"
+	    ("g" text-scale-increase "in")
+	    ("l" text-scale-decrease "out")))
 
 
 ;; Remember to do M-x and run `nerd-icons-install-fonts' to get the
@@ -248,7 +248,7 @@ The DWIM behaviour of this command is as follows:
   (setq trashed-sort-key '("Date deleted" . t))
   (setq trashed-date-format "%Y-%m-%d %H:%M:%S"))
 
-;---------------------------------------------------------------------
+					;---------------------------------------------------------------------
 
 ;;interactive lisp programming
 (use-package sly
@@ -285,9 +285,9 @@ The DWIM behaviour of this command is as follows:
               '((t (:weight bold)))
               "Face used for outermost parens.")
             (use-package cl-lib
-            )
+              )
             (use-package color
-            )
+              )
             (show-paren-mode)
             (cl-loop
              for index from 1 to rainbow-delimiters-max-face-count
@@ -323,8 +323,8 @@ The DWIM behaviour of this command is as follows:
 ;;flash where the cursor is when the screen moves
 (use-package beacon
   :ensure t
-    :config (beacon-mode 1)
-    )
+  :config (beacon-mode 1)
+  )
 
 (use-package org-roam
   :ensure t
@@ -341,7 +341,7 @@ The DWIM behaviour of this command is as follows:
 
 
 ;;roswell helper
-;(load (expand-file-name "~/.roswell/helper.el"))
+					;(load (expand-file-name "~/.roswell/helper.el"))
 
 ;;(server-start)
 ;;things to add once comfortable
@@ -447,3 +447,38 @@ The DWIM behaviour of this command is as follows:
 									    :environment []
 									    :targetarchitecture "arm" ;;Only if you actually use ARM processor, such as on MacOS
 									    :cwd (projectile-project-root))))))
+(use-package claude-code-ide
+  :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
+  :bind ("C-c C-'" . claude-code-ide-menu)
+  :config
+  (claude-code-ide-emacs-tools-setup)) ; Optionally enable Emacs MCP tools
+
+
+;;Requires a local copy of carp-emacs, it's not on melpa or anything like that.
+(if (file-directory-p "~/git/carp-emacs")
+    (progn
+      (add-to-list 'load-path "~/git/carp-emacs")
+      (require 'carp-mode)
+      (require 'inf-carp-mode)
+      (add-to-list 'auto-mode-alist '("\\.carp\\'" . carp-mode))
+      ))
+
+;; Use carp-mode for .carp files
+
+
+;;Guix specific, load any emacs guix packages that might exist
+(if (file-directory-p "~/.guix-profile/share/emacs/site-lisp")
+  (progn
+    (add-to-list 'load-path "~/.guix-profile/share/emacs/site-lisp")
+    (guix-emacs-autoload-packages)))
+
+;;local AI using llama-cpp
+(use-package gptel
+  :defer t
+  :config (setq
+	   gptel-model   'local
+	   gptel-backend (gptel-make-openai "llama-cpp"
+			   :stream t
+			   :protocol "http"
+			   :host "127.0.0.1:8000"
+			   :models '(local))))
