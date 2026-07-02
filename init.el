@@ -457,6 +457,10 @@ The DWIM behaviour of this command is as follows:
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
   (add-hook 'c++-mode-hook 'lsp))
 
+(use-package markdown-mermaid
+  :ensure (markdown-mermaid :type git :host github :repo "pasunboneleve/markdown-mermaid")
+  :bind (:map markdown-mode-map
+              ("C-c m" . markdown-mermaid-preview)))
 
 (use-package projectile
   :ensure t
