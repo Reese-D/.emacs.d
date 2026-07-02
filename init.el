@@ -5,12 +5,6 @@
 ;;some common compile options I use
 ;;--without-sound --without-imagemagick --with-rsvg --with-threads --with-x-toolkit=no --with-native-compilation --with-tree-sitter --with-ns 'CFLAGS= -pipe -O3 -march=native -fomit-frame-pointer -fno-semantic-interposition -L/opt/homebrew/lib/gcc/14 -I/opt/homebrew/include -Wl,-rpath,/opt/homebrew/lib/gcc/14' LDFLAGS="-Wl,-O1" 
 
-<<<<<<< HEAD
-(setq auto-save-file-name-transforms
-      `((".*" ,(concat user-emacs-directory "auto-save/") t))) 
-
-=======
->>>>>>> 2bcb715 (Fix backup directories)
 (defvar elpaca-installer-version 0.11)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
@@ -526,4 +520,3 @@ The DWIM behaviour of this command is as follows:
 (setq backup-directory-alist
       `(("." . ,(expand-file-name
                  (concat user-emacs-directory "backups")))))
->>>>>>> 2bcb715 (Fix backup directories)
