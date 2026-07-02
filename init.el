@@ -5,9 +5,12 @@
 ;;some common compile options I use
 ;;--without-sound --without-imagemagick --with-rsvg --with-threads --with-x-toolkit=no --with-native-compilation --with-tree-sitter --with-ns 'CFLAGS= -pipe -O3 -march=native -fomit-frame-pointer -fno-semantic-interposition -L/opt/homebrew/lib/gcc/14 -I/opt/homebrew/include -Wl,-rpath,/opt/homebrew/lib/gcc/14' LDFLAGS="-Wl,-O1" 
 
+<<<<<<< HEAD
 (setq auto-save-file-name-transforms
       `((".*" ,(concat user-emacs-directory "auto-save/") t))) 
 
+=======
+>>>>>>> 2bcb715 (Fix backup directories)
 (defvar elpaca-installer-version 0.11)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
@@ -151,6 +154,10 @@ The DWIM behaviour of this command is as follows:
 	    ("g" text-scale-increase "in")
 	    ("l" text-scale-decrease "out")))
 
+;;Allows you to rotate buffers to move windows around
+;;Use with rotate-window command
+(use-package rotate
+  :ensure t)
 
 ;; Remember to do M-x and run `nerd-icons-install-fonts' to get the
 ;; font files.  Then restart Emacs to see the effect.
@@ -413,13 +420,31 @@ The DWIM behaviour of this command is as follows:
   :ensure t
   )
 
-
 (use-package lsp-ui
   :ensure t
+  :init
+  (global-set-key (kbd "C-c k") 'lsp-ui-doc-glance)
   :commands lsp-ui-mode
   :custom
   (lsp-ui-peek-always-show t)
-  (lsp-ui-sideline-show-hover t))
+  (lsp-ui-sideline-show-hover t)
+  (lsp-ui-sideline-show-diagnostics t)
+  (lsp-ui-sideline-show-code-actions t)
+  :config
+  (setq lsp-ui-doc-enable t)
+  (setq lsp-ui-doc-position 'at-point) ;;default is top or bottom i think?
+  (setq lsp-ui-doc-show-with-cursor nil)) ;;show doc when hovering over symbol
+
+(use-package company
+  :ensure t
+  :hook (lsp-mode . company-mode)
+  :config
+  (global-company-mode))
+
+(use-package flycheck
+  :ensure t
+  :init
+  (global-flycheck-mode))
 
 (use-package lsp-mode
   :init
@@ -429,7 +454,9 @@ The DWIM behaviour of this command is as follows:
   :commands lsp
   :config
   (which-key-mode)
-  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+  (add-hook 'c++-mode-hook 'lsp))
+
 
 (use-package projectile
   :ensure t
@@ -440,13 +467,14 @@ The DWIM behaviour of this command is as follows:
 					 (dap-register-debug-template "Rust LLDB Debug Configuration"
 								      (list :type "cppdbg"
 									    :request "launch"
-									    :name "Rust::Run"
+									    : name "Rust::Run"
 									    :MIMode "lldb"
 									    :gdbpath "rust-lldb"
 									    :program (concat (projectile-project-root) "target/debug/" (projectile-project-name)) ;; Requires that the rust project is a project in projectile
 									    :environment []
 									    :targetarchitecture "arm" ;;Only if you actually use ARM processor, such as on MacOS
 									    :cwd (projectile-project-root))))))
+
 (use-package claude-code-ide
   :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
   :bind ("C-c C-'" . claude-code-ide-menu)
@@ -482,3 +510,16 @@ The DWIM behaviour of this command is as follows:
 			   :protocol "http"
 			   :host "127.0.0.1:8000"
 			   :models '(local))))
+
+(setq-default c-basic-offset 4)
+
+; Source - https://stackoverflow.com/a/22176971
+; Posted by user2053036, modified by community. See post 'Timeline' for change history
+; Retrieved 2026-05-25, License - CC BY-SA 3.0
+(setq auto-save-file-name-transforms
+          `((".*" ,(concat user-emacs-directory "auto-save/") t))) 
+
+(setq backup-directory-alist
+      `(("." . ,(expand-file-name
+                 (concat user-emacs-directory "backups")))))
+>>>>>>> 2bcb715 (Fix backup directories)
